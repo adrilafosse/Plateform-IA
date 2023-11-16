@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/noirsavee"
+    tools:context=".aide">
+
+
+    <TextView
+        android:id="@+id/FirstContact"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="500dp"
+        android:gravity="center"
+        android:text="Ismael: ismael.francois-yatta@isen.yncrea.fr"
+        android:textColor="@color/bleusavee"
+        android:textSize="17sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/SecondContact"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="Yacine: yacine-Zorah.fosso-kenfack@isen.yncrea.fr"
+        android:textColor="@color/bleusavee"
+        android:textSize="17sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FirstContact" />
+
+    <TextView
+        android:id="@+id/ThirdContact"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="Gauthier: gauthier.lannurien@isen.yncrea.fr"
+        android:textColor="@color/bleusavee"
+        android:textSize="17sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SecondContact" />
+
+    <TextView
+        android:id="@+id/FourthContact"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="Arnold: arnold-jean-patrick.dedji@isen.yncrea.fr"
+        android:textColor="@color/bleusavee"
+        android:textSize="17sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ThirdContact" />
+
+
+    <TextView
+        android:id="@+id/FiveContact"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="Arthur: arthur.debray@isen.yncrea.fr"
+        android:textColor="@color/bleusavee"
+        android:textSize="17sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FourthContact" />
+
+
+    <TextView
+        android:id="@+id/SixContact"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="Camille: camille.girard@isen.yncrea.fr"
+        android:textColor="@color/bleusavee"
+        android:textSize="17sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FiveContact" />
+
+    <TextView
+        android:id="@+id/SevenContact"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="Pierre: pierre.saison@isen.yncrea.fr"
+        android:textColor="@color/bleusavee"
+        android:textSize="17sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SixContact" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="93dp"
+        android:layout_height="74dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
