@@ -1,9 +1,8 @@
 package fr.isen.francoisyatta.projectv2
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
-import androidx.viewpager.widget.ViewPager
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -11,13 +10,14 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.google.android.material.tabs.TabLayout
-import fr.isen.francoisyatta.projectv2.Adapter.adapter
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import fr.isen.francoisyatta.projectv2.databinding.ActivityMaconsoBinding
 
 class maconso : AppCompatActivity() {
 
     private lateinit var binding: ActivityMaconsoBinding
+    private val consoHeure = ArrayList<Pair<Float, String>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +31,7 @@ class maconso : AppCompatActivity() {
         //actionBar!!.setDisplayHomeAsUpEnabled(true)
         //actionBar!!.setDisplayShowHomeEnabled(true)
 
+
         // prend les données depuis putExtra intent
         val intent = intent
         val aTitle = intent.getStringExtra("iTitle")
@@ -38,7 +39,47 @@ class maconso : AppCompatActivity() {
         //définit le titre dans une autre activité
         //actionBar.setTitle(aTitle)
         //aTitle.text = aTitle
-        initializeScreen()
+        fetchDataAndFillList()
+    }
+    private fun fetchDataAndFillList() {
+        val db = FirebaseFirestore.getInstance()
+        val mAuth = FirebaseAuth.getInstance()
+        val currentUser = mAuth.currentUser
+
+        if (currentUser != null) {
+            val uid = currentUser.uid
+            Log.d("Activite", "1: $uid")
+            db.collection("id").document(uid).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val document = task.result
+                        if (document != null && document.exists()) {
+                            for (index in 1..4) {
+                                val array = document.get("$index") as? ArrayList<*>
+
+                                if (array != null && array.size == 2) {
+                                    val numberValue = array[0] as? Number
+                                    val stringValue = array[1] as? String
+
+                                    if (numberValue != null && stringValue != null) {
+                                        Log.d("Activite", "Valeur du tableau (Number): $numberValue, Valeur du tableau 'String': $stringValue")
+                                        consoHeure.add(Pair(numberValue.toFloat(), stringValue))
+                                    } else {
+                                        Log.e("Activite", "Erreur: Le champ 'number' ou 'string' est nul pour l'index $index")
+                                    }
+                                } else {
+                                    Log.e("Activite", "Erreur: Le tableau à l'index $index est incorrect ou nul")
+                                }
+                            }
+                            initializeScreen()
+                        } else {
+                            Log.e("Activite", "Erreur: Document nul ou inexistant")
+                        }
+                    } else {
+                        Log.e("Activite", "Erreur lors de la récupération des données de 'id'", task.exception)
+                    }
+                }
+        }
     }
     private fun initializeScreen() {
         val consommation = setLineChartData(evolution_consommation(), R.color.bleusavee)
@@ -88,31 +129,14 @@ class maconso : AppCompatActivity() {
 
         chart.axisRight.isEnabled = false
     }
-
-    //fonction où on rentre les valeurs des abscisses et des ordonnées
     private fun evolution_consommation(): ArrayList<Entry> {
         val lineValues = ArrayList<Entry>()
-        lineValues.add(Entry(0f, 5.1F))
-        lineValues.add(Entry(5f, 5.3F))
-        lineValues.add(Entry(10f, 5.2F))
-        lineValues.add(Entry(15f, 5.5F))
-        lineValues.add(Entry(20f, 5.3F))
-        lineValues.add(Entry(25f, 5.7F))
-        lineValues.add(Entry(30f, 7.3F))
-        lineValues.add(Entry(35f, 9.1F))
-        lineValues.add(Entry(40f, 15.2F))
-        lineValues.add(Entry(45f, 17.8F))
-        lineValues.add(Entry(50f, 19.5F))
-        lineValues.add(Entry(55f, 18.6F))
-        lineValues.add(Entry(60f, 17.1F))
-        lineValues.add(Entry(65f, 10.0F))
-        lineValues.add(Entry(70f, 7.7F))
-        lineValues.add(Entry(75f, 6.5F))
-        lineValues.add(Entry(80f, 5.6F))
-        lineValues.add(Entry(85f, 5.2F))
-        lineValues.add(Entry(90f, 5.0F))
-        lineValues.add(Entry(95f, 4.8F))
-        lineValues.add(Entry(100f, 5.0F))
+
+        for ((index, pair) in consoHeure.withIndex()) {
+            lineValues.add(Entry(index.toFloat() * 5, pair.first))
+        }
+
         return lineValues
     }
+
 }
