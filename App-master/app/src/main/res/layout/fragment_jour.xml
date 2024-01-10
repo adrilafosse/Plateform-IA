@@ -19,7 +19,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
-            android:layout_width="394dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="16dp">
 
