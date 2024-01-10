@@ -89,7 +89,7 @@ class maconso : AppCompatActivity() {
 
                                         if (conso != null && heure != null && date != null) {
 
-                                            Log.d("date heure", "dateheure: $date")
+                                            Log.d("date heure 1", "dateheure: $date")
                                             Log.d("ma conso date", "date: $date3")
                                             Log.d("ma conso heure 1", "heure: $h3")
                                             Log.d("ma conso heure 2", "heure: $h6")
