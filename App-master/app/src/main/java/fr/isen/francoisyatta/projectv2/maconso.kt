@@ -1,9 +1,8 @@
 package fr.isen.francoisyatta.projectv2
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
-import androidx.viewpager.widget.ViewPager
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -11,13 +10,23 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.google.android.material.tabs.TabLayout
-import fr.isen.francoisyatta.projectv2.Adapter.adapter
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import fr.isen.francoisyatta.projectv2.databinding.ActivityMaconsoBinding
+import java.util.*
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+
 
 class maconso : AppCompatActivity() {
 
     private lateinit var binding: ActivityMaconsoBinding
+
+    private val consoHeure = ArrayList<Pair<Float, Float>>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +36,11 @@ class maconso : AppCompatActivity() {
         binding = ActivityMaconsoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         //val actionBar : ActionBar? = supportActionBar
         //actionBar!!.setDisplayHomeAsUpEnabled(true)
         //actionBar!!.setDisplayShowHomeEnabled(true)
+
 
         // prend les données depuis putExtra intent
         val intent = intent
@@ -38,7 +49,78 @@ class maconso : AppCompatActivity() {
         //définit le titre dans une autre activité
         //actionBar.setTitle(aTitle)
         //aTitle.text = aTitle
-        initializeScreen()
+        fetchDataAndFillList()
+    }
+    private fun fetchDataAndFillList() {
+        val db = FirebaseFirestore.getInstance()
+        val mAuth = FirebaseAuth.getInstance()
+        val currentUser = mAuth.currentUser
+
+        if (currentUser != null) {
+            // on recupère l'uid de l'utilisateur
+            val uid = currentUser.uid
+            Log.d("conso uid", "1: $uid")
+            // on récupère les données de la collection id qui a pour id l'uid de l'utilisateur
+            db.collection("id").document(uid).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val document = task.result
+                        if (document != null && document.exists()) {
+                            //on parcourt les tableaux en fonction de leur numéros
+                            for (index in 1..4) {
+                                val array = document.get("$index") as? ArrayList<*>
+
+                                if (array != null && array.size == 3) {
+                                    val conso = array[0] as? Number
+                                    val heure = array[1] as? Number
+                                    val timestamp = array[2] as? Timestamp
+
+                                    //on divise la date et l'heure
+                                    val date = timestamp?.toDate()
+                                    val date2 = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                                    val h2 = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                                    val date3 = date?.let { date2.format(it) }
+                                    val h3 = date?.let { h2.format(it) }
+                                    val h4 = h3?.toCharArray()
+                                    if (h4 != null) {
+
+                                        val h5: Int = Integer.parseInt("${h4?.get(0)}${h4?.get(1)}${h4?.get(3)}${h4?.get(4)}${h4?.get(6)}${h4?.get(7)}")
+                                        val h6 = h5.toFloat()
+
+                                        if (conso != null && heure != null && date != null) {
+
+                                            Log.d("date heure", "dateheure: $date")
+                                            Log.d("ma conso date", "date: $date3")
+                                            Log.d("ma conso heure 1", "heure: $h3")
+                                            Log.d("ma conso heure 2", "heure: $h6")
+                                            val h7 = h6/10000
+
+                                            //on ajoute les données récuperé dans consoHeure
+                                            consoHeure.add(Pair(conso.toFloat(), h7.toFloat()))
+                                            Log.d(
+                                                "conso data 2",
+                                                "Valeur du tableau (Number): $consoHeure"
+                                            )
+                                        } else {
+                                            Log.e(
+                                                "Activite",
+                                                "Erreur: Le champ 'number' ou 'string' est nul pour l'index $index"
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    Log.e("Activite", "Erreur: Le tableau à l'index $index est incorrect ou nul")
+                                }
+                            }
+                            initializeScreen()
+                        } else {
+                            Log.e("Activite", "Erreur: Document nul ou inexistant")
+                        }
+                    } else {
+                        Log.e("Activite", "Erreur lors de la récupération des données de 'id'", task.exception)
+                    }
+                }
+        }
     }
     private fun initializeScreen() {
         val consommation = setLineChartData(evolution_consommation(), R.color.bleusavee)
@@ -75,12 +157,14 @@ class maconso : AppCompatActivity() {
 
         val x: XAxis = chart.xAxis
         x.position = XAxis.XAxisPosition.BOTTOM
+
         x.setDrawAxisLine(true)
         x.setDrawGridLines(false)
         x.textColor = getColor(R.color.black)
         x.axisLineColor = getColor(R.color.black)
 
         val y: YAxis = chart.axisLeft
+
         y.setDrawZeroLine(true)
         y.setDrawGridLines(false)
         y.textColor = getColor(R.color.black)
@@ -88,31 +172,18 @@ class maconso : AppCompatActivity() {
 
         chart.axisRight.isEnabled = false
     }
-
-    //fonction où on rentre les valeurs des abscisses et des ordonnées
     private fun evolution_consommation(): ArrayList<Entry> {
         val lineValues = ArrayList<Entry>()
-        lineValues.add(Entry(0f, 5.1F))
-        lineValues.add(Entry(5f, 5.3F))
-        lineValues.add(Entry(10f, 5.2F))
-        lineValues.add(Entry(15f, 5.5F))
-        lineValues.add(Entry(20f, 5.3F))
-        lineValues.add(Entry(25f, 5.7F))
-        lineValues.add(Entry(30f, 7.3F))
-        lineValues.add(Entry(35f, 9.1F))
-        lineValues.add(Entry(40f, 15.2F))
-        lineValues.add(Entry(45f, 17.8F))
-        lineValues.add(Entry(50f, 19.5F))
-        lineValues.add(Entry(55f, 18.6F))
-        lineValues.add(Entry(60f, 17.1F))
-        lineValues.add(Entry(65f, 10.0F))
-        lineValues.add(Entry(70f, 7.7F))
-        lineValues.add(Entry(75f, 6.5F))
-        lineValues.add(Entry(80f, 5.6F))
-        lineValues.add(Entry(85f, 5.2F))
-        lineValues.add(Entry(90f, 5.0F))
-        lineValues.add(Entry(95f, 4.8F))
-        lineValues.add(Entry(100f, 5.0F))
+
+        for ((index, pair) in consoHeure.withIndex()) {
+            Log.d("conso data 3", "index: $index")
+            Log.d("conso data 4", "pair $pair")
+
+            lineValues.add(Entry(pair.second , pair.first))
+            Log.d("conso data 5", "lineValues: $lineValues")
+        }
+
         return lineValues
     }
+
 }
