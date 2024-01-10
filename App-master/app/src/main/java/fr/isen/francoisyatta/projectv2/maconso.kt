@@ -1,7 +1,9 @@
 package fr.isen.francoisyatta.projectv2
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
@@ -36,6 +38,14 @@ class maconso : AppCompatActivity() {
         binding = ActivityMaconsoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val yourButton: Button = findViewById(R.id.button2)
+
+        // Set an OnClickListener for the button
+        yourButton.setOnClickListener {
+            // Define the behavior when the button is clicked
+            val intent = Intent(this, JourActivity::class.java)
+            startActivity(intent)
+        }
 
         //val actionBar : ActionBar? = supportActionBar
         //actionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -89,7 +99,7 @@ class maconso : AppCompatActivity() {
 
                                         if (conso != null && heure != null && date != null) {
 
-                                            Log.d("date heure", "dateheure: $date")
+
                                             Log.d("ma conso date", "date: $date3")
                                             Log.d("ma conso heure 1", "heure: $h3")
                                             Log.d("ma conso heure 2", "heure: $h6")
