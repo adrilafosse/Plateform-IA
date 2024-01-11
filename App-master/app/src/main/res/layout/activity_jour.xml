@@ -9,11 +9,12 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"
         android:name="fr.isen.francoisyatta.projectv2.fragment.Jour"
-        android:layout_width="367dp"
-        android:layout_height="690dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="368dp"
+        android:layout_height="365dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_jour" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,8 +3,12 @@ package fr.isen.francoisyatta.projectv2
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -16,6 +20,10 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import fr.isen.francoisyatta.projectv2.databinding.ActivityMaconsoBinding
+import fr.isen.francoisyatta.projectv2.fragment.Annee
+import fr.isen.francoisyatta.projectv2.fragment.Jour
+import fr.isen.francoisyatta.projectv2.fragment.Mois
+import fr.isen.francoisyatta.projectv2.fragment.Semaine
 import java.util.*
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -38,13 +46,40 @@ class maconso : AppCompatActivity() {
         binding = ActivityMaconsoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val yourButton: Button = findViewById(R.id.button2)
+        val Button1: Button = findViewById(R.id.button1)
+        val Button2: Button = findViewById(R.id.button2)
+        val Button3: Button = findViewById(R.id.button3)
+        val Button4: Button = findViewById(R.id.button4)
 
-        // Set an OnClickListener for the button
-        yourButton.setOnClickListener {
-            // Define the behavior when the button is clicked
-            val intent = Intent(this, JourActivity::class.java)
-            startActivity(intent)
+        val fragmentJour = Jour()
+        val fragmentSemaine = Semaine()
+        val fragmentMois = Mois()
+        val fragmentAnnee = Annee()
+
+        Button1.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, fragmentJour)
+                .commit()
+
+        }
+
+        Button2.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, fragmentSemaine)
+                .commit()
+        }
+
+        Button3.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, fragmentMois)
+                .commit()
+
+        }
+
+        Button4.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, fragmentAnnee)
+                .commit()
         }
 
         //val actionBar : ActionBar? = supportActionBar
@@ -61,6 +96,7 @@ class maconso : AppCompatActivity() {
         //aTitle.text = aTitle
         fetchDataAndFillList()
     }
+
     private fun fetchDataAndFillList() {
         val db = FirebaseFirestore.getInstance()
         val mAuth = FirebaseAuth.getInstance()
@@ -122,7 +158,6 @@ class maconso : AppCompatActivity() {
                                     Log.e("Activite", "Erreur: Le tableau à l'index $index est incorrect ou nul")
                                 }
                             }
-                            initializeScreen()
                         } else {
                             Log.e("Activite", "Erreur: Document nul ou inexistant")
                         }
@@ -135,7 +170,7 @@ class maconso : AppCompatActivity() {
     private fun initializeScreen() {
         val consommation = setLineChartData(evolution_consommation(), R.color.bleusavee)
         val graphLignes = listOf<LineDataSet>(consommation)
-        drawChart(graphLignes, binding.consoGraph)
+        //drawChart(graphLignes, binding.fragmentJour)
 
     }
 
@@ -195,5 +230,4 @@ class maconso : AppCompatActivity() {
 
         return lineValues
     }
-
 }
