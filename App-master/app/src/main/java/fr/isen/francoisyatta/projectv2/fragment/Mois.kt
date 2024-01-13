@@ -6,15 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.isen.francoisyatta.projectv2.R
+import fr.isen.francoisyatta.projectv2.databinding.FragmentJourBinding
+import fr.isen.francoisyatta.projectv2.databinding.FragmentMoisBinding
 
 class Mois : Fragment() {
+
+    private lateinit var binding: FragmentMoisBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mois, container, false)
+        binding = FragmentMoisBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    fun getFragmentMoisBinding(): FragmentMoisBinding {
+        return binding
     }
 
 }
+
+
