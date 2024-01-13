@@ -6,14 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import fr.isen.francoisyatta.projectv2.R
+import fr.isen.francoisyatta.projectv2.databinding.FragmentAnneeBinding
+
 
 class Annee : Fragment() {
+
+    private lateinit var binding: FragmentAnneeBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_annee, container, false)
+        binding = FragmentAnneeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+    fun getFragmentAnneeBinding(): FragmentAnneeBinding {
+        return binding
     }
 }
+

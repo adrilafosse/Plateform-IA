@@ -29,6 +29,9 @@ class maconso : AppCompatActivity() {
 
     private lateinit var binding: ActivityMaconsoBinding
     private lateinit var fragmentJour: Jour
+    private lateinit var fragmentSemaine: Semaine
+    private lateinit var fragmentMois: Mois
+    private lateinit var fragmentAnnee: Annee
     private val consoHeure = ArrayList<Pair<Float, Float>>()
 
 
@@ -44,55 +47,56 @@ class maconso : AppCompatActivity() {
         val Button3: Button = findViewById(R.id.button3)
         val Button4: Button = findViewById(R.id.button4)
 
-        // Utilisez la propriété de classe fragmentJour au lieu d'une variable locale
         fragmentJour = Jour()
-        val fragmentSemaine = Semaine()
-        val fragmentMois = Mois()
-        val fragmentAnnee = Annee()
+        fragmentSemaine = Semaine()
+        fragmentMois = Mois()
+        fragmentAnnee = Annee()
 
         Button1.setOnClickListener {
+            val bouton =1
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragmentContainer, fragmentJour)
-            transaction.commitNow() // Use commitNow to immediately execute the transaction
+            transaction.commitNow()
 
-            // Call initializeScreen after the transaction is complete
             supportFragmentManager.executePendingTransactions()
-            initializeScreen()
+            initializeScreen(fragmentJour.getFragmentJourBinding().consoGraph)
+            fetchDataAndFillList(bouton)
         }
         Button2.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, fragmentSemaine)
-                .commit()
+            val bouton =2
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainer, fragmentSemaine)
+            transaction.commitNow()
+
+            supportFragmentManager.executePendingTransactions()
+            initializeScreen(fragmentSemaine.getFragmentSemaineBinding().consoGraph)
+            fetchDataAndFillList(bouton)
         }
 
         Button3.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, fragmentMois)
-                .commit()
+            val bouton =3
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainer, fragmentMois)
+            transaction.commitNow()
+
+            supportFragmentManager.executePendingTransactions()
+            initializeScreen(fragmentMois.getFragmentMoisBinding().consoGraph)
+            fetchDataAndFillList(bouton)
         }
 
         Button4.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, fragmentAnnee)
-                .commit()
+            val bouton =4
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainer, fragmentAnnee)
+            transaction.commitNow()
+
+            supportFragmentManager.executePendingTransactions()
+            initializeScreen(fragmentAnnee.getFragmentAnneeBinding().consoGraph)
+            fetchDataAndFillList(bouton)
         }
-
-        //val actionBar : ActionBar? = supportActionBar
-        //actionBar!!.setDisplayHomeAsUpEnabled(true)
-        //actionBar!!.setDisplayShowHomeEnabled(true)
-
-
-        // prend les données depuis putExtra intent
-        val intent = intent
-        val aTitle = intent.getStringExtra("iTitle")
-
-        //définit le titre dans une autre activité
-        //actionBar.setTitle(aTitle)
-        //aTitle.text = aTitle
-        fetchDataAndFillList()
     }
 
-    private fun fetchDataAndFillList() {
+    private fun fetchDataAndFillList(btn : Int) {
         val db = FirebaseFirestore.getInstance()
         val mAuth = FirebaseAuth.getInstance()
         val currentUser = mAuth.currentUser
@@ -162,16 +166,13 @@ class maconso : AppCompatActivity() {
                 }
         }
     }
-    private fun initializeScreen() {
+    private fun initializeScreen(chart: LineChart) {
         val consommation = setLineChartData(evolution_consommation(), R.color.bleusavee)
         val graphLignes = listOf<LineDataSet>(consommation)
 
-        // Obtenez une référence au graphique du fragment
-        val fragmentJourChart = fragmentJour.getFragmentJourBinding().consoGraph
-
-        // Appelez drawChart avec le graphique du fragment
-        drawChart(graphLignes, fragmentJourChart)
+        drawChart(graphLignes, chart)
     }
+
 
 
     private fun setLineChartData(lineValues: ArrayList<Entry>, color: Int): LineDataSet {
