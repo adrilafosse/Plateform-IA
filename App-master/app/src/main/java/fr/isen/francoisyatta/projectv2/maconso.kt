@@ -1,14 +1,9 @@
 package fr.isen.francoisyatta.projectv2
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -26,7 +21,6 @@ import fr.isen.francoisyatta.projectv2.fragment.Mois
 import fr.isen.francoisyatta.projectv2.fragment.Semaine
 import java.util.*
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 
@@ -34,14 +28,13 @@ import java.util.Locale
 class maconso : AppCompatActivity() {
 
     private lateinit var binding: ActivityMaconsoBinding
-
+    private lateinit var fragmentJour: Jour
     private val consoHeure = ArrayList<Pair<Float, Float>>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maconso)  //liaison du code .kotlin à l'affichage layout .xml
-
+        setContentView(R.layout.activity_maconso)
 
         binding = ActivityMaconsoBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -51,18 +44,21 @@ class maconso : AppCompatActivity() {
         val Button3: Button = findViewById(R.id.button3)
         val Button4: Button = findViewById(R.id.button4)
 
-        val fragmentJour = Jour()
+        // Utilisez la propriété de classe fragmentJour au lieu d'une variable locale
+        fragmentJour = Jour()
         val fragmentSemaine = Semaine()
         val fragmentMois = Mois()
         val fragmentAnnee = Annee()
 
         Button1.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, fragmentJour)
-                .commit()
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainer, fragmentJour)
+            transaction.commitNow() // Use commitNow to immediately execute the transaction
 
+            // Call initializeScreen after the transaction is complete
+            supportFragmentManager.executePendingTransactions()
+            initializeScreen()
         }
-
         Button2.setOnClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragmentSemaine)
@@ -73,7 +69,6 @@ class maconso : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragmentMois)
                 .commit()
-
         }
 
         Button4.setOnClickListener {
@@ -170,9 +165,14 @@ class maconso : AppCompatActivity() {
     private fun initializeScreen() {
         val consommation = setLineChartData(evolution_consommation(), R.color.bleusavee)
         val graphLignes = listOf<LineDataSet>(consommation)
-        //drawChart(graphLignes, binding.fragmentJour)
 
+        // Obtenez une référence au graphique du fragment
+        val fragmentJourChart = fragmentJour.getFragmentJourBinding().consoGraph
+
+        // Appelez drawChart avec le graphique du fragment
+        drawChart(graphLignes, fragmentJourChart)
     }
+
 
     private fun setLineChartData(lineValues: ArrayList<Entry>, color: Int): LineDataSet {
         val lineDataset = LineDataSet(lineValues, "Consommation")
