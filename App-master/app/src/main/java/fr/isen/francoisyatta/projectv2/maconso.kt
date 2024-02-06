@@ -64,7 +64,7 @@ class maconso : AppCompatActivity() {
             transaction.commitNow()
 
             supportFragmentManager.executePendingTransactions()
-            doneeJour()
+            donneeJour()
             initializeScreen(fragmentJour.getFragmentJourBinding().consoGraph)
         }
         Button2.setOnClickListener {
@@ -90,18 +90,18 @@ class maconso : AppCompatActivity() {
         }
 
         Button4.setOnClickListener {
-            val bouton =4
+            consoHeure.clear()
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragmentContainer, fragmentAnnee)
             transaction.commitNow()
 
             supportFragmentManager.executePendingTransactions()
+            donneeAnnee()
             initializeScreen(fragmentAnnee.getFragmentAnneeBinding().consoGraph)
-            //fetchDataAndFillList(bouton)
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun doneeJour(){
+    private fun donneeJour(){
         val dateDuJour = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("ddMMyyyy")
         val dateFormatee = dateDuJour.format(formatter)
@@ -116,6 +116,27 @@ class maconso : AppCompatActivity() {
                 val conso = consoString.toFloatOrNull() ?: 0.0f
                 val heure = heureString.toFloatOrNull() ?: 0.0f
                 consoHeure.add(Pair(conso, heure))
+            }
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun donneeAnnee(){
+        val dateDuJour = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy")
+        val annee = dateDuJour.format(formatter)
+        Log.d("annee", "1: $annee")
+        for (i in 0 until taille) {
+            val anneeString = tableaufinal[i][2].joinToString("")
+            val anneeDonnee  = anneeString.substring(4, 8)
+            Log.d("anneeDonnee", "1: $anneeDonnee")
+            if(anneeDonnee == annee ){
+                val consoString = tableaufinal[i][0].joinToString("")
+                val dateString = tableaufinal[i][2].joinToString("")
+
+                val conso = consoString.toFloatOrNull() ?: 0.0f
+                val date = dateString.toFloatOrNull() ?: 0.0f
+
+                consoHeure.add(Pair(conso, date))
             }
         }
     }
