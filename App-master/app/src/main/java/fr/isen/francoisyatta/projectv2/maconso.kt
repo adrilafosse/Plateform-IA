@@ -1,8 +1,10 @@
 package fr.isen.francoisyatta.projectv2
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
@@ -11,7 +13,6 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import fr.isen.francoisyatta.projectv2.databinding.ActivityMaconsoBinding
@@ -20,8 +21,9 @@ import fr.isen.francoisyatta.projectv2.fragment.Jour
 import fr.isen.francoisyatta.projectv2.fragment.Mois
 import fr.isen.francoisyatta.projectv2.fragment.Semaine
 import java.util.*
-import java.text.SimpleDateFormat
-import java.util.Locale
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 
 
 
@@ -33,8 +35,10 @@ class maconso : AppCompatActivity() {
     private lateinit var fragmentMois: Mois
     private lateinit var fragmentAnnee: Annee
     private val consoHeure = ArrayList<Pair<Float, Float>>()
+    private var tableaufinal: List<Array<CharArray>> = listOf()
+    var taille: Int = 0
 
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maconso)
@@ -52,15 +56,16 @@ class maconso : AppCompatActivity() {
         fragmentMois = Mois()
         fragmentAnnee = Annee()
 
+        recupérationDonnées()
         Button1.setOnClickListener {
-            val bouton =1
+            consoHeure.clear()
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragmentContainer, fragmentJour)
             transaction.commitNow()
 
             supportFragmentManager.executePendingTransactions()
+            doneeJour()
             initializeScreen(fragmentJour.getFragmentJourBinding().consoGraph)
-            fetchDataAndFillList(bouton)
         }
         Button2.setOnClickListener {
             val bouton =2
@@ -70,7 +75,7 @@ class maconso : AppCompatActivity() {
 
             supportFragmentManager.executePendingTransactions()
             initializeScreen(fragmentSemaine.getFragmentSemaineBinding().consoGraph)
-            fetchDataAndFillList(bouton)
+            //fetchDataAndFillList(bouton)
         }
 
         Button3.setOnClickListener {
@@ -81,7 +86,7 @@ class maconso : AppCompatActivity() {
 
             supportFragmentManager.executePendingTransactions()
             initializeScreen(fragmentMois.getFragmentMoisBinding().consoGraph)
-            fetchDataAndFillList(bouton)
+            //fetchDataAndFillList(bouton)
         }
 
         Button4.setOnClickListener {
@@ -92,11 +97,29 @@ class maconso : AppCompatActivity() {
 
             supportFragmentManager.executePendingTransactions()
             initializeScreen(fragmentAnnee.getFragmentAnneeBinding().consoGraph)
-            fetchDataAndFillList(bouton)
+            //fetchDataAndFillList(bouton)
         }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun doneeJour(){
+        val dateDuJour = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("ddMMyyyy")
+        val dateFormatee = dateDuJour.format(formatter)
+        Log.d("dateFormatee", "1: $dateFormatee")
+        for (i in 0 until taille) {
+            val jour = tableaufinal[i][2].joinToString("")
+            if(jour == dateFormatee){
+                Log.d("jour", "1: $jour")
+                val consoString = tableaufinal[i][0].joinToString("")
+                val heureString = tableaufinal[i][1].joinToString("")
 
-    private fun fetchDataAndFillList(btn : Int) {
+                val conso = consoString.toFloatOrNull() ?: 0.0f
+                val heure = heureString.toFloatOrNull() ?: 0.0f
+                consoHeure.add(Pair(conso, heure))
+            }
+        }
+    }
+    private fun recupérationDonnées() {
         val db = FirebaseFirestore.getInstance()
         val mAuth = FirebaseAuth.getInstance()
         val currentUser = mAuth.currentUser
@@ -105,56 +128,53 @@ class maconso : AppCompatActivity() {
             // on recupère l'uid de l'utilisateur
             val uid = currentUser.uid
             Log.d("conso uid", "1: $uid")
+
             // on récupère les données de la collection id qui a pour id l'uid de l'utilisateur
             db.collection("id").document(uid).get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val document = task.result
                         if (document != null && document.exists()) {
-                            //on parcourt les tableaux en fonction de leur numéros
-                            for (index in 1..4) {
-                                val array = document.get("$index") as? ArrayList<*>
+                            //on recupere les données
+                            val data = document.data
+                            Log.d("donnée de firebase", "1: $data")
 
-                                if (array != null && array.size == 3) {
-                                    val conso = array[0] as? Number
-                                    val heure = array[1] as? Number
-                                    val timestamp = array[2] as? Timestamp
+                            if(data != null){
+                                taille = data.size
+                                Log.d("taille du tableau", "1: $taille")
 
-                                    //on divise la date et l'heure
-                                    val date = timestamp?.toDate()
-                                    val date2 = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-                                    val h2 = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-                                    val date3 = date?.let { date2.format(it) }
-                                    val h3 = date?.let { h2.format(it) }
-                                    val h4 = h3?.toCharArray()
-                                    if (h4 != null) {
-
-                                        val h5: Int = Integer.parseInt("${h4?.get(0)}${h4?.get(1)}${h4?.get(3)}${h4?.get(4)}${h4?.get(6)}${h4?.get(7)}")
-                                        val h6 = h5.toFloat()
-
-                                        if (conso != null && heure != null && date != null) {
-
-
-                                            Log.d("ma conso date", "date: $date3")
-                                            Log.d("ma conso heure 1", "heure: $h3")
-                                            Log.d("ma conso heure 2", "heure: $h6")
-                                            val h7 = h6/10000
-
-                                            //on ajoute les données récuperé dans consoHeure
-                                            consoHeure.add(Pair(conso.toFloat(), h7.toFloat()))
-                                            Log.d(
-                                                "conso data 2",
-                                                "Valeur du tableau (Number): $consoHeure"
-                                            )
-                                        } else {
-                                            Log.e(
-                                                "Activite",
-                                                "Erreur: Le champ 'number' ou 'string' est nul pour l'index $index"
-                                            )
-                                        }
+                                val monTableau = mutableListOf<String>()
+                                //on cree un tableau qui va prendre les valeurs de data
+                                for (i in 0 until taille) {
+                                    val value = data.entries.elementAtOrNull(i)?.value as? String
+                                    Log.d("value", "1: $value")
+                                    if (value != null) {
+                                        monTableau.add(value)
+                                        Log.d("valeur du tableau", "1: ${monTableau[i]}")
                                     }
-                                } else {
-                                    Log.e("Activite", "Erreur: Le tableau à l'index $index est incorrect ou nul")
+                                }
+
+                                val tableaustring = monTableau.toTypedArray()
+
+                                //on decoupe de string en 3 parties
+                                tableaufinal = tableaustring.map { chaine ->
+                                    val conso = charArrayOf(chaine[0], chaine[1], chaine[2])
+                                    val heure = charArrayOf(chaine[5], chaine[6], chaine[8],chaine[9])
+                                    val minutesChar = charArrayOf(chaine[8],chaine[9])
+                                    val annee = charArrayOf(chaine[11], chaine[12], chaine[14],chaine[15],chaine[17],chaine[18],chaine[19],chaine[20])
+
+                                    // Modification minute en base 10
+                                    val minutesString = minutesChar.joinToString("")
+                                    val minutesFloat = minutesString.toFloatOrNull() ?: 0.0f
+                                    Log.d("minutesFloat", "1: $minutesFloat")
+
+                                    val minuteBase10 = (minutesFloat / 60).toString()
+                                    Log.d("minuteBase10", "1: $minuteBase10")
+
+                                    // Concaténation des heures et des minutes
+                                    val heureMinute = heure + minuteBase10.toCharArray()
+
+                                    arrayOf(conso, heureMinute, annee)
                                 }
                             }
                         } else {
@@ -226,7 +246,6 @@ class maconso : AppCompatActivity() {
             Log.d("conso data 4", "pair $pair")
 
             lineValues.add(Entry(pair.second , pair.first))
-            Log.d("conso data 5", "lineValues: $lineValues")
         }
 
         return lineValues
