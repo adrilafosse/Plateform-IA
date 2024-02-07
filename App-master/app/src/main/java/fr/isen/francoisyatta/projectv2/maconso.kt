@@ -168,7 +168,7 @@ class maconso : AppCompatActivity() {
         }
         // Calculez la moyenne de la consommation pour chaque jours
         for ((jours, consommations) in consommationsParJours) {
-            val moyenne = consommations.average()
+            val moyenne = consommations.sum()
             Log.d("Moyenne pour le jour $jours", "$moyenne")
             val moyenneFloat = moyenne.toFloat()
             val joursFloat = jours.toFloat()
@@ -210,7 +210,7 @@ class maconso : AppCompatActivity() {
 
         // Calculez la moyenne de la consommation pour chaque mois
         for ((mois, consommations) in consommationsParMois) {
-            val moyenne = consommations.average()
+            val moyenne = consommations.sum()
             Log.d("Moyenne pour le mois $mois", "$moyenne")
             val moyenneFloat = moyenne.toFloat()
             val moisFloat = mois.toFloat()
