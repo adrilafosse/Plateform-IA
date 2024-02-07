@@ -28,6 +28,7 @@ import java.time.format.DateTimeFormatter
 
 
 
+
 class maconso : AppCompatActivity() {
 
     private lateinit var binding: ActivityMaconsoBinding
@@ -72,6 +73,7 @@ class maconso : AppCompatActivity() {
         Button2.setOnClickListener {
             recupérationDonnées()
             val bouton =2
+            consoHeure.clear()
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragmentContainer, fragmentSemaine)
             transaction.commitNow()
@@ -83,14 +85,15 @@ class maconso : AppCompatActivity() {
 
         Button3.setOnClickListener {
             recupérationDonnées()
+            consoHeure.clear()
             val bouton =3
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragmentContainer, fragmentMois)
             transaction.commitNow()
 
             supportFragmentManager.executePendingTransactions()
-            //initializeScreen(fragmentMois.getFragmentMoisBinding().consoGraph)
-            //fetchDataAndFillList(bouton)
+            donneeMois()
+            initializeScreen(fragmentMois.getFragmentMoisBinding().consoGraph, bouton)
         }
 
         Button4.setOnClickListener {
@@ -129,6 +132,52 @@ class maconso : AppCompatActivity() {
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
+    private fun donneeMois() {
+        val dateDuJour = LocalDate.now()
+        val formatterMois = DateTimeFormatter.ofPattern("MM")
+        val moisToday = dateDuJour.format(formatterMois)
+        Log.d("moisToday", "1: $moisToday")
+        val formatter = DateTimeFormatter.ofPattern("yyyy")
+        val annee = dateDuJour.format(formatter)
+        val consommationsParJours = mutableMapOf<String, MutableList<Float>>()
+
+        // Parcourez les données et stockez les consommations associées à chaque jours
+        for (i in 0 until taille) {
+            val anneeString = tableaufinal[i][2].joinToString("")
+            Log.d("anneeString", "$anneeString")
+            val moisDonnee = anneeString.substring(2, 4)
+            Log.d("moisDonnee", "$moisDonnee")
+            val anneeDonnee = anneeString.substring(4, 8)
+
+            // Vérifiez si le mois correspond à notre mois
+            if (moisDonnee == moisToday && anneeDonnee == annee ) {
+                val consoString = tableaufinal[i][0].joinToString("")
+                val dateString = tableaufinal[i][2].joinToString("")
+                val jours = dateString.substring(0,2 ) // Extrait le jour de la date
+                Log.d("joursMois $jours", " anneeDonnee $anneeDonnee" )
+
+                val consoFinal = consoString.toFloatOrNull() ?: 0.0f
+
+                if (jours in consommationsParJours) {
+                    consommationsParJours[jours]!!.add(consoFinal)
+                } else {
+                    consommationsParJours[jours] = mutableListOf(consoFinal)
+                }
+                Log.d("consommationsParJours", "$consommationsParJours")
+            }
+        }
+        // Calculez la moyenne de la consommation pour chaque jours
+        for ((jours, consommations) in consommationsParJours) {
+            val moyenne = consommations.average()
+            Log.d("Moyenne pour le jour $jours", "$moyenne")
+            val moyenneFloat = moyenne.toFloat()
+            val joursFloat = jours.toFloat()
+            Log.d("moyenneFloat", "$moyenneFloat")
+            Log.d("joursFloat", "$joursFloat")
+            consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun donneeAnnee(){
         val dateDuJour = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy")
@@ -148,7 +197,6 @@ class maconso : AppCompatActivity() {
                 val mois = dateString.substring(2, 4) // Extrait le mois de la date
 
                 val consoFinal = consoString.toFloatOrNull() ?: 0.0f
-                val dateFinal = dateString.toFloatOrNull() ?: 0.0f
 
                 // Ajoutez la consommation à la liste associée au mois correspondant
                 if (mois in consommationsParMois) {
@@ -172,6 +220,7 @@ class maconso : AppCompatActivity() {
         }
 
     }
+
     private fun recupérationDonnées() {
         val db = FirebaseFirestore.getInstance()
         val mAuth = FirebaseAuth.getInstance()
@@ -312,6 +361,21 @@ class maconso : AppCompatActivity() {
             x.axisMinimum = 0f
             x.axisMaximum = 24f
             chart.description.text = "H"
+            chart.description.textSize = 12f
+        }
+        if( btn ==3){
+            // Définir les valeurs minimale et maximale de l'axe X
+            x.granularity = 1f // affichage des valeurs entières
+            x.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return String.format("%.0f", value)
+                }
+            }
+            x.labelCount = 12
+            x.granularity = 2f
+            x.axisMinimum = 0f
+            x.axisMaximum = 31f
+            chart.description.text = "Jours"
             chart.description.textSize = 12f
         }
         if( btn == 4){
