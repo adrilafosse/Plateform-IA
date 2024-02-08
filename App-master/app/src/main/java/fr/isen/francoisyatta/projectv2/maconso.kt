@@ -24,9 +24,8 @@ import fr.isen.francoisyatta.projectv2.fragment.Semaine
 import java.util.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
-
-
+import java.time.DayOfWeek
+import java.time.format.TextStyle
 
 
 class maconso : AppCompatActivity() {
@@ -79,8 +78,8 @@ class maconso : AppCompatActivity() {
             transaction.commitNow()
 
             supportFragmentManager.executePendingTransactions()
-            //initializeScreen(fragmentSemaine.getFragmentSemaineBinding().consoGraph)
-            //fetchDataAndFillList(bouton)
+            donneeSemaine()
+            initializeScreen(fragmentSemaine.getFragmentSemaineBinding().consoGraph, bouton)
         }
 
         Button3.setOnClickListener {
@@ -132,6 +131,224 @@ class maconso : AppCompatActivity() {
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
+    private fun donneeSemaine(){
+
+        val dateDuJour = LocalDate.now()
+        Log.d("dateDuJour", "1: $dateDuJour")
+
+        //recupere le jour en anglais de la semaine
+        val jourDeLaSemaine = dateDuJour.dayOfWeek
+
+        //recupere le jour en chiffre du jour
+        val formatter = DateTimeFormatter.ofPattern("dd")
+        val dateFormateeStr = dateDuJour.format(formatter)
+
+        // Convertir la date formatée en un entier
+        val dateFormatee = dateFormateeStr.toInt()
+
+        //transforme le jour en anglais en francais
+        val jourDeLaSemaineEnString = jourDeLaSemaine.getDisplayName(TextStyle.FULL, Locale.FRENCH)
+        Log.d("jourDeLaSemaineEnString", "1: $jourDeLaSemaineEnString")
+
+        //cree des map par jour de la semaine
+        val consommationsParJoursLundi = mutableMapOf<String, MutableList<Float>>()
+        val consommationsParJoursMardi = mutableMapOf<String, MutableList<Float>>()
+        val consommationsParJoursMercredi = mutableMapOf<String, MutableList<Float>>()
+        val consommationsParJoursJeudi = mutableMapOf<String, MutableList<Float>>()
+        val consommationsParJoursVendredi = mutableMapOf<String, MutableList<Float>>()
+        val consommationsParJoursSamedi = mutableMapOf<String, MutableList<Float>>()
+        val consommationsParJoursDimanche = mutableMapOf<String, MutableList<Float>>()
+
+        for (i in 0 until taille) {
+
+            val date = tableaufinal[i][2].joinToString("")
+            val jourSemaineChar = charArrayOf(date[0],date[1])
+            val jours = date
+                .substring(0,2 ) // Extrait le jour de la date
+
+            //recupere conso
+            val consoString = tableaufinal[i][0].joinToString("")
+            val conso = consoString.toFloatOrNull() ?: 0.0f
+
+            //transforme je jour en INT
+            val premierChiffre = Character.getNumericValue(jourSemaineChar[0])
+            val deuxiemeChiffre = Character.getNumericValue(jourSemaineChar[1])
+
+            val jourSemaineInt = premierChiffre*10 + deuxiemeChiffre
+            Log.d("jourSemaineInt", "1: $jourSemaineInt")
+
+
+            if(jourDeLaSemaineEnString == "lundi"){
+                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                    jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
+                    jourSemaineInt == dateFormatee+4 || jourSemaineInt == dateFormatee+5 ||
+                    jourSemaineInt == dateFormatee+6){
+
+                    if (jours in consommationsParJoursLundi) {
+                        consommationsParJoursLundi[jours]!!.add(conso)
+                    } else {
+                        consommationsParJoursLundi[jours] = mutableListOf(conso)
+                    }
+                    Log.d("consommationsParJoursLundi", "$consommationsParJoursLundi")
+                }
+            }
+            if(jourDeLaSemaineEnString == "mardi"){
+                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                    jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
+                    jourSemaineInt == dateFormatee+4 || jourSemaineInt == dateFormatee+5
+                    || jourSemaineInt == dateFormatee-1){
+
+                    if (jours in consommationsParJoursMardi) {
+                        consommationsParJoursMardi[jours]!!.add(conso)
+                    } else {
+                        consommationsParJoursMardi[jours] = mutableListOf(conso)
+                    }
+                    Log.d("consommationsParJoursMardi", "$consommationsParJoursMardi")
+                }
+            }
+            if(jourDeLaSemaineEnString == "mercredi"){
+                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                    jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
+                    jourSemaineInt == dateFormatee+4 || jourSemaineInt == dateFormatee-2 ||
+                    jourSemaineInt == dateFormatee-1){
+
+                    if (jours in consommationsParJoursMercredi) {
+                        consommationsParJoursMercredi[jours]!!.add(conso)
+                    } else {
+                        consommationsParJoursMercredi[jours] = mutableListOf(conso)
+                    }
+                    Log.d("consommationsParJoursMercredi", "$consommationsParJoursMercredi")
+                }
+            }
+            if(jourDeLaSemaineEnString == "jeudi"){
+                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                    jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
+                    jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
+                    jourSemaineInt == dateFormatee-1){
+
+                    if (jours in consommationsParJoursJeudi) {
+                        consommationsParJoursJeudi[jours]!!.add(conso)
+                    } else {
+                        consommationsParJoursJeudi[jours] = mutableListOf(conso)
+                    }
+                    Log.d("consommationsParJoursJeudi", "$consommationsParJoursJeudi")
+                }
+            }
+            if(jourDeLaSemaineEnString == "vendredi"){
+                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                    jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee-4 ||
+                    jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
+                    jourSemaineInt == dateFormatee-1){
+
+                    if (jours in consommationsParJoursVendredi) {
+                        consommationsParJoursVendredi[jours]!!.add(conso)
+                    } else {
+                        consommationsParJoursVendredi[jours] = mutableListOf(conso)
+                    }
+                    Log.d("consommationsParJoursVendredi", "$consommationsParJoursVendredi")
+                }
+            }
+            if(jourDeLaSemaineEnString == "samedi"){
+                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                    jourSemaineInt == dateFormatee-5 || jourSemaineInt == dateFormatee-4 ||
+                    jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
+                    jourSemaineInt == dateFormatee-1){
+
+                    if (jours in consommationsParJoursSamedi) {
+                        consommationsParJoursSamedi[jours]!!.add(conso)
+                    } else {
+                        consommationsParJoursSamedi[jours] = mutableListOf(conso)
+                    }
+                    Log.d("consommationsParJoursSamedi", "$consommationsParJoursSamedi")
+                }
+            }
+            if(jourDeLaSemaineEnString == "dimanche"){
+                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee-6 ||
+                    jourSemaineInt == dateFormatee-5 || jourSemaineInt == dateFormatee-4 ||
+                    jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
+                    jourSemaineInt == dateFormatee-1){
+
+                    if (jours in consommationsParJoursDimanche) {
+                        consommationsParJoursDimanche[jours]!!.add(conso)
+                    } else {
+                        consommationsParJoursDimanche[jours] = mutableListOf(conso)
+                    }
+                    Log.d("consommationsParJoursDimanche", "$consommationsParJoursDimanche")
+                }
+            }
+            // Calculez la moyenne de la somme pour chaque jours
+            for ((jours, consommations) in consommationsParJoursLundi) {
+                val moyenne = consommations.sum()
+                Log.d("Moyenne pour le jour $jours", "$moyenne")
+                val moyenneFloat = moyenne.toFloat()
+                val joursFloat = jours.toFloat()
+                Log.d("moyenneFloat", "$moyenneFloat")
+                Log.d("joursFloat", "$joursFloat")
+                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+            }
+            // Calculez la moyenne de la somme pour chaque jours
+            for ((jours, consommations) in consommationsParJoursMardi) {
+                val moyenne = consommations.sum()
+                Log.d("Moyenne pour le jour $jours", "$moyenne")
+                val moyenneFloat = moyenne.toFloat()
+                val joursFloat = jours.toFloat()
+                Log.d("moyenneFloat", "$moyenneFloat")
+                Log.d("joursFloat", "$joursFloat")
+                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+            }
+            // Calculez la moyenne de la somme pour chaque jours
+            for ((jours, consommations) in consommationsParJoursMercredi) {
+                val moyenne = consommations.sum()
+                Log.d("Moyenne pour le jour $jours", "$moyenne")
+                val moyenneFloat = moyenne.toFloat()
+                val joursFloat = jours.toFloat()
+                Log.d("moyenneFloat", "$moyenneFloat")
+                Log.d("joursFloat", "$joursFloat")
+                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+            }
+            // Calculez la moyenne de la somme pour chaque jours
+            for ((jours, consommations) in consommationsParJoursJeudi) {
+                val moyenne = consommations.sum()
+                Log.d("Moyenne pour le jour $jours", "$moyenne")
+                val moyenneFloat = moyenne.toFloat()
+                val joursFloat = jours.toFloat()
+                Log.d("moyenneFloat", "$moyenneFloat")
+                Log.d("joursFloat", "$joursFloat")
+                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+            }
+            // Calculez la moyenne de la somme pour chaque jours
+            for ((jours, consommations) in consommationsParJoursVendredi) {
+                val moyenne = consommations.sum()
+                Log.d("Moyenne pour le jour $jours", "$moyenne")
+                val moyenneFloat = moyenne.toFloat()
+                val joursFloat = jours.toFloat()
+                Log.d("moyenneFloat", "$moyenneFloat")
+                Log.d("joursFloat", "$joursFloat")
+                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+            }
+            // Calculez la moyenne de la somme pour chaque jours
+            for ((jours, consommations) in consommationsParJoursSamedi) {
+                val moyenne = consommations.sum()
+                Log.d("Moyenne pour le jour $jours", "$moyenne")
+                val moyenneFloat = moyenne.toFloat()
+                val joursFloat = jours.toFloat()
+                Log.d("moyenneFloat", "$moyenneFloat")
+                Log.d("joursFloat", "$joursFloat")
+                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+            }
+            // Calculez la moyenne de la somme pour chaque jours
+            for ((jours, consommations) in consommationsParJoursDimanche) {
+                val moyenne = consommations.sum()
+                Log.d("Moyenne pour le jour $jours", "$moyenne")
+                val moyenneFloat = moyenne.toFloat()
+                val joursFloat = jours.toFloat()
+                Log.d("moyenneFloat", "$moyenneFloat")
+                Log.d("joursFloat", "$joursFloat")
+                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+            }
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun donneeMois() {
         val dateDuJour = LocalDate.now()
         val formatterMois = DateTimeFormatter.ofPattern("MM")
@@ -166,7 +383,7 @@ class maconso : AppCompatActivity() {
                 Log.d("consommationsParJours", "$consommationsParJours")
             }
         }
-        // Calculez la moyenne de la consommation pour chaque jours
+        // Calculez la moyenne de la somme pour chaque jours
         for ((jours, consommations) in consommationsParJours) {
             val moyenne = consommations.sum()
             Log.d("Moyenne pour le jour $jours", "$moyenne")
@@ -208,7 +425,7 @@ class maconso : AppCompatActivity() {
             }
         }
 
-        // Calculez la moyenne de la consommation pour chaque mois
+        // Calculez la somme de la consommation pour chaque mois
         for ((mois, consommations) in consommationsParMois) {
             val moyenne = consommations.sum()
             Log.d("Moyenne pour le mois $mois", "$moyenne")
@@ -257,7 +474,7 @@ class maconso : AppCompatActivity() {
                                 }
 
                                 val tableaustring = monTableau.toTypedArray()
-                                var anneeALenversInt : Int =0
+
                                 //on decoupe de string en 3 parties
                                 tableaufinal = tableaustring.map { chaine ->
                                     val conso = charArrayOf(chaine[0], chaine[1], chaine[2])
@@ -265,7 +482,9 @@ class maconso : AppCompatActivity() {
                                     val minutesChar = charArrayOf(chaine[8],chaine[9])
                                     val annee = charArrayOf(chaine[11], chaine[12], chaine[14],chaine[15],chaine[17],chaine[18],chaine[19],chaine[20])
                                     val anneeALenvers = charArrayOf(chaine[17], chaine[18], chaine[19],chaine[20],chaine[14],chaine[15],chaine[11],chaine[12])
+                                    val anneeALenversFormater = charArrayOf(chaine[17], chaine[18], chaine[19],chaine[20],'-',chaine[14],chaine[15],'-',chaine[11],chaine[12])
 
+                                    //Log.d("anneeALenversFormater", "1: ${anneeALenversFormater.joinToString("")}")
                                     // Modification minute en base 10
                                     val minutesString = minutesChar.joinToString("")
                                     val minutesFloat = minutesString.toFloatOrNull() ?: 0.0f
@@ -280,8 +499,8 @@ class maconso : AppCompatActivity() {
                                     Log.d("heureMinute", "1: ${heureMinute.joinToString("")}")
 
                                     val anneeALenversHeure = anneeALenvers+heureMinute
-
-                                    arrayOf(conso, heureMinute, annee, anneeALenversHeure)
+                                    Log.d("anneeALenversHeure", "1: ${anneeALenversHeure.joinToString("")}")
+                                    arrayOf(conso, heureMinute, annee, anneeALenversHeure,anneeALenversFormater)
                                 }
                                 //trie le tableau par rapport a l'annee
                                 tableaufinal = tableaufinal.sortedBy { ligne ->
@@ -293,8 +512,9 @@ class maconso : AppCompatActivity() {
                                     val heure = String(ligne[1])
                                     val annee = String(ligne[2])
                                     val anneeALenversHeure = String(ligne[3])
+                                    val anneeALenversFormater = String(ligne[4])
 
-                                    Log.d("Tableaufinal2", "Conso: $conso, Heure: $heure, Année: $annee, anneeALenversHeure : $anneeALenversHeure")
+                                    Log.d("Tableaufinal2", "Conso: $conso, Heure: $heure, Année: $annee, anneeALenversHeure : $anneeALenversHeure,anneeALenversFormater : $anneeALenversFormater")
                                 }
 
 
