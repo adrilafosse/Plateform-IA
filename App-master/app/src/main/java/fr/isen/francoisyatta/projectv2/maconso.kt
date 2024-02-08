@@ -162,6 +162,7 @@ class maconso : AppCompatActivity() {
         for (i in 0 until taille) {
 
             val date = tableaufinal[i][2].joinToString("")
+
             val jourSemaineChar = charArrayOf(date[0],date[1])
             val jours = date
                 .substring(0,2 ) // Extrait le jour de la date
@@ -276,75 +277,236 @@ class maconso : AppCompatActivity() {
                     Log.d("consommationsParJoursDimanche", "$consommationsParJoursDimanche")
                 }
             }
-            // Calculez la moyenne de la somme pour chaque jours
-            for ((jours, consommations) in consommationsParJoursLundi) {
-                val moyenne = consommations.sum()
-                Log.d("Moyenne pour le jour $jours", "$moyenne")
-                val moyenneFloat = moyenne.toFloat()
-                val joursFloat = jours.toFloat()
-                Log.d("moyenneFloat", "$moyenneFloat")
-                Log.d("joursFloat", "$joursFloat")
-                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
-            }
-            // Calculez la moyenne de la somme pour chaque jours
-            for ((jours, consommations) in consommationsParJoursMardi) {
-                val moyenne = consommations.sum()
-                Log.d("Moyenne pour le jour $jours", "$moyenne")
-                val moyenneFloat = moyenne.toFloat()
-                val joursFloat = jours.toFloat()
-                Log.d("moyenneFloat", "$moyenneFloat")
-                Log.d("joursFloat", "$joursFloat")
-                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
-            }
-            // Calculez la moyenne de la somme pour chaque jours
-            for ((jours, consommations) in consommationsParJoursMercredi) {
-                val moyenne = consommations.sum()
-                Log.d("Moyenne pour le jour $jours", "$moyenne")
-                val moyenneFloat = moyenne.toFloat()
-                val joursFloat = jours.toFloat()
-                Log.d("moyenneFloat", "$moyenneFloat")
-                Log.d("joursFloat", "$joursFloat")
-                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
-            }
-            // Calculez la moyenne de la somme pour chaque jours
+        }
+        // Calculez la moyenne de la somme pour chaque jours
+        if(consommationsParJoursLundi.isNotEmpty()){
             for ((jours, consommations) in consommationsParJoursJeudi) {
                 val moyenne = consommations.sum()
-                Log.d("Moyenne pour le jour $jours", "$moyenne")
-                val moyenneFloat = moyenne.toFloat()
-                val joursFloat = jours.toFloat()
-                Log.d("moyenneFloat", "$moyenneFloat")
-                Log.d("joursFloat", "$joursFloat")
-                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+                Log.d("somme conso pour lundi $jours", "$moyenne")
+                val joursInt = jours.toIntOrNull()
+                Log.d("dateFormatee ", "$dateFormatee")
+                Log.d("joursInt ", "$joursInt")
+                var jourSemaine : Int =0
+                if(joursInt == dateFormatee){
+                    jourSemaine = 1
+                }
+                if(joursInt == dateFormatee +1){
+                    jourSemaine = 2
+                }
+                if(joursInt == dateFormatee +2){
+                    jourSemaine = 3
+                }
+                if(joursInt == dateFormatee +3){
+                    jourSemaine = 4
+                }
+                if(joursInt == dateFormatee +4){
+                    jourSemaine = 5
+                }
+                if(joursInt == dateFormatee +5){
+                    jourSemaine = 6
+                }
+                if(joursInt == dateFormatee +6){
+                    jourSemaine = 7
+                }
+                consoHeure.add(Pair(moyenne, jourSemaine.toFloat()))
             }
-            // Calculez la moyenne de la somme pour chaque jours
-            for ((jours, consommations) in consommationsParJoursVendredi) {
+        }
+        // Calculez la moyenne de la somme pour chaque jours
+        if(consommationsParJoursMardi.isNotEmpty()){
+            for ((jours, consommations) in consommationsParJoursJeudi) {
                 val moyenne = consommations.sum()
-                Log.d("Moyenne pour le jour $jours", "$moyenne")
-                val moyenneFloat = moyenne.toFloat()
-                val joursFloat = jours.toFloat()
-                Log.d("moyenneFloat", "$moyenneFloat")
-                Log.d("joursFloat", "$joursFloat")
-                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+                Log.d("somme conso pour mardi $jours", "$moyenne")
+                val joursInt = jours.toIntOrNull()
+                Log.d("dateFormatee ", "$dateFormatee")
+                Log.d("joursInt ", "$joursInt")
+                var jourSemaine : Int =0
+                if(joursInt == dateFormatee){
+                    jourSemaine = 2
+                }
+                if(joursInt == dateFormatee +1){
+                    jourSemaine = 3
+                }
+                if(joursInt == dateFormatee +2){
+                    jourSemaine = 4
+                }
+                if(joursInt == dateFormatee +3){
+                    jourSemaine = 5
+                }
+                if(joursInt == dateFormatee -1){
+                    jourSemaine = 1
+                }
+                if(joursInt == dateFormatee +4){
+                    jourSemaine = 6
+                }
+                if(joursInt == dateFormatee +5){
+                    jourSemaine = 7
+                }
+                consoHeure.add(Pair(moyenne, jourSemaine.toFloat()))
             }
-            // Calculez la moyenne de la somme pour chaque jours
-            for ((jours, consommations) in consommationsParJoursSamedi) {
+        }
+        // Calculez la moyenne de la somme pour chaque jours
+        if(consommationsParJoursMercredi.isNotEmpty()){
+            for ((jours, consommations) in consommationsParJoursJeudi) {
                 val moyenne = consommations.sum()
-                Log.d("Moyenne pour le jour $jours", "$moyenne")
-                val moyenneFloat = moyenne.toFloat()
-                val joursFloat = jours.toFloat()
-                Log.d("moyenneFloat", "$moyenneFloat")
-                Log.d("joursFloat", "$joursFloat")
-                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+                Log.d("somme conso pour mercredi $jours", "$moyenne")
+                val joursInt = jours.toIntOrNull()
+                Log.d("dateFormatee ", "$dateFormatee")
+                Log.d("joursInt ", "$joursInt")
+                var jourSemaine : Int =0
+                if(joursInt == dateFormatee){
+                    jourSemaine = 3
+                }
+                if(joursInt == dateFormatee +1){
+                    jourSemaine = 4
+                }
+                if(joursInt == dateFormatee +2){
+                    jourSemaine = 5
+                }
+                if(joursInt == dateFormatee +3){
+                    jourSemaine = 6
+                }
+                if(joursInt == dateFormatee -1){
+                    jourSemaine = 2
+                }
+                if(joursInt == dateFormatee -2){
+                    jourSemaine = 1
+                }
+                if(joursInt == dateFormatee +4){
+                    jourSemaine = 7
+                }
+                consoHeure.add(Pair(moyenne, jourSemaine.toFloat()))
             }
-            // Calculez la moyenne de la somme pour chaque jours
-            for ((jours, consommations) in consommationsParJoursDimanche) {
+        }
+        // Calculez la moyenne de la somme pour chaque jours
+        if(consommationsParJoursJeudi.isNotEmpty()){
+            for ((jours, consommations) in consommationsParJoursJeudi) {
                 val moyenne = consommations.sum()
-                Log.d("Moyenne pour le jour $jours", "$moyenne")
-                val moyenneFloat = moyenne.toFloat()
-                val joursFloat = jours.toFloat()
-                Log.d("moyenneFloat", "$moyenneFloat")
-                Log.d("joursFloat", "$joursFloat")
-                consoHeure.add(Pair(moyenne.toFloat(), jours.toFloat()))
+                Log.d("somme conso pour jeudi $jours", "$moyenne")
+                val joursInt = jours.toIntOrNull()
+                Log.d("dateFormatee ", "$dateFormatee")
+                Log.d("joursInt ", "$joursInt")
+                var jourSemaine : Int =0
+                if(joursInt == dateFormatee){
+                    jourSemaine = 4
+                }
+                if(joursInt == dateFormatee +1){
+                    jourSemaine = 5
+                }
+                if(joursInt == dateFormatee +2){
+                    jourSemaine = 6
+                }
+                if(joursInt == dateFormatee +3){
+                    jourSemaine = 7
+                }
+                if(joursInt == dateFormatee -1){
+                    jourSemaine = 3
+                }
+                if(joursInt == dateFormatee -2){
+                    jourSemaine = 2
+                }
+                if(joursInt == dateFormatee -3){
+                    jourSemaine = 1
+                }
+                consoHeure.add(Pair(moyenne, jourSemaine.toFloat()))
+            }
+        }
+        // Calculez la moyenne de la somme pour chaque jours
+        if(consommationsParJoursVendredi.isNotEmpty()){
+            for ((jours, consommations) in consommationsParJoursJeudi) {
+                val moyenne = consommations.sum()
+                Log.d("somme conso pour jeudi $jours", "$moyenne")
+                val joursInt = jours.toIntOrNull()
+                Log.d("dateFormatee ", "$dateFormatee")
+                Log.d("joursInt ", "$joursInt")
+                var jourSemaine : Int =0
+                if(joursInt == dateFormatee){
+                    jourSemaine = 5
+                }
+                if(joursInt == dateFormatee +1){
+                    jourSemaine = 6
+                }
+                if(joursInt == dateFormatee +2){
+                    jourSemaine = 7
+                }
+                if(joursInt == dateFormatee -4){
+                    jourSemaine = 1
+                }
+                if(joursInt == dateFormatee -1){
+                    jourSemaine = 4
+                }
+                if(joursInt == dateFormatee -2){
+                    jourSemaine = 3
+                }
+                if(joursInt == dateFormatee -3){
+                    jourSemaine = 2
+                }
+                consoHeure.add(Pair(moyenne, jourSemaine.toFloat()))
+            }
+        }
+        // Calculez la moyenne de la somme pour chaque jours
+        if(consommationsParJoursSamedi.isNotEmpty()){
+            for ((jours, consommations) in consommationsParJoursJeudi) {
+                val moyenne = consommations.sum()
+                Log.d("somme conso pour samedi $jours", "$moyenne")
+                val joursInt = jours.toIntOrNull()
+                Log.d("dateFormatee ", "$dateFormatee")
+                Log.d("joursInt ", "$joursInt")
+                var jourSemaine : Int =0
+                if(joursInt == dateFormatee){
+                    jourSemaine = 6
+                }
+                if(joursInt == dateFormatee +1){
+                    jourSemaine = 7
+                }
+                if(joursInt == dateFormatee -4){
+                    jourSemaine = 2
+                }
+                if(joursInt == dateFormatee -5){
+                    jourSemaine = 1
+                }
+                if(joursInt == dateFormatee -1){
+                    jourSemaine = 5
+                }
+                if(joursInt == dateFormatee -2){
+                    jourSemaine = 4
+                }
+                if(joursInt == dateFormatee -3){
+                    jourSemaine = 3
+                }
+                consoHeure.add(Pair(moyenne, jourSemaine.toFloat()))
+            }
+        }
+        // Calculez la moyenne de la somme pour chaque jours
+        if(consommationsParJoursDimanche.isNotEmpty()){
+            for ((jours, consommations) in consommationsParJoursJeudi) {
+                val moyenne = consommations.sum()
+                Log.d("somme conso pour jeudi $jours", "$moyenne")
+                val joursInt = jours.toIntOrNull()
+                Log.d("dateFormatee ", "$dateFormatee")
+                Log.d("joursInt ", "$joursInt")
+                var jourSemaine : Int =0
+                if(joursInt == dateFormatee){
+                    jourSemaine = 7
+                }
+                if(joursInt == dateFormatee -4){
+                    jourSemaine = 3
+                }
+                if(joursInt == dateFormatee -5){
+                    jourSemaine = 2
+                }
+                if(joursInt == dateFormatee -6){
+                    jourSemaine = 1
+                }
+                if(joursInt == dateFormatee -1){
+                    jourSemaine = 6
+                }
+                if(joursInt == dateFormatee -2){
+                    jourSemaine = 5
+                }
+                if(joursInt == dateFormatee -3){
+                    jourSemaine = 4
+                }
+                consoHeure.add(Pair(moyenne, jourSemaine.toFloat()))
             }
         }
     }
@@ -583,6 +745,30 @@ class maconso : AppCompatActivity() {
             chart.description.text = "H"
             chart.description.textSize = 12f
         }
+        if (btn == 2) {
+            // Définir les valeurs minimale et maximale de l'axe X
+            x.granularity = 1f // affichage des valeurs entières
+            x.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return when (value) {
+                        1f -> "Lu"
+                        2f -> "Ma"
+                        3f -> "Mer"
+                        4f -> "Je"
+                        5f -> "Ven"
+                        6f -> "Sa"
+                        7f -> "Di"
+                        else -> ""
+                    }
+                }
+            }
+            x.labelCount = 7 // Nombre total de libellés sur l'axe X
+            x.axisMinimum = 0.5f // Ajuster légèrement les valeurs minimale et maximale pour centrer les libellés
+            x.axisMaximum = 7.5f
+            chart.description.text = "Jours"
+            chart.description.textSize = 12f
+        }
+
         if( btn ==3){
             // Définir les valeurs minimale et maximale de l'axe X
             x.granularity = 1f // affichage des valeurs entières
@@ -603,9 +789,24 @@ class maconso : AppCompatActivity() {
             x.granularity = 1f // affichage des valeurs entières
             x.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
-                    return String.format("%.0f", value)
+                    return when (value) {
+                        1f -> "J"
+                        2f -> "F"
+                        3f -> "M"
+                        4f -> "A"
+                        5f -> "M"
+                        6f -> "J"
+                        7f -> "J"
+                        8f -> "A"
+                        9f -> "S"
+                        10f -> "O"
+                        11f -> "N"
+                        12f -> "D"
+                        else -> ""
+                    }
                 }
             }
+            x.axisMinimum = 0.5f
             x.labelCount = 12
             x.granularity = 1f
             x.axisMinimum = 0f
