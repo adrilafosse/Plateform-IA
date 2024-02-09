@@ -143,6 +143,11 @@ class maconso : AppCompatActivity() {
         val formatter = DateTimeFormatter.ofPattern("dd")
         val dateFormateeStr = dateDuJour.format(formatter)
 
+        //recupere mois et annee
+        val formatter2= DateTimeFormatter.ofPattern("MMyyyy")
+        val moisAnneeToday = dateDuJour.format(formatter2)
+        Log.d("moisAnneeToday", "1: $moisAnneeToday")
+
         // Convertir la date formatée en un entier
         val dateFormatee = dateFormateeStr.toInt()
 
@@ -166,7 +171,9 @@ class maconso : AppCompatActivity() {
             val jourSemaineChar = charArrayOf(date[0],date[1])
             val jours = date
                 .substring(0,2 ) // Extrait le jour de la date
-
+            val moisAnnee = date
+                .substring(2,8) // extrait mois annee
+            Log.d("moisAnnee", "1: $moisAnnee")
             //recupere conso
             val consoString = tableaufinal[i][0].joinToString("")
             val conso = consoString.toFloatOrNull() ?: 0.0f
@@ -178,109 +185,111 @@ class maconso : AppCompatActivity() {
             val jourSemaineInt = premierChiffre*10 + deuxiemeChiffre
             Log.d("jourSemaineInt", "1: $jourSemaineInt")
 
+            if( moisAnnee == moisAnneeToday){
+                if(jourDeLaSemaineEnString == "lundi"){
+                    if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                        jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
+                        jourSemaineInt == dateFormatee+4 || jourSemaineInt == dateFormatee+5 ||
+                        jourSemaineInt == dateFormatee+6){
 
-            if(jourDeLaSemaineEnString == "lundi"){
-                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
-                    jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
-                    jourSemaineInt == dateFormatee+4 || jourSemaineInt == dateFormatee+5 ||
-                    jourSemaineInt == dateFormatee+6){
-
-                    if (jours in consommationsParJoursLundi) {
-                        consommationsParJoursLundi[jours]!!.add(conso)
-                    } else {
-                        consommationsParJoursLundi[jours] = mutableListOf(conso)
+                        if (jours in consommationsParJoursLundi) {
+                            consommationsParJoursLundi[jours]!!.add(conso)
+                        } else {
+                            consommationsParJoursLundi[jours] = mutableListOf(conso)
+                        }
                     }
-                    Log.d("consommationsParJoursLundi", "$consommationsParJoursLundi")
+                }
+                if(jourDeLaSemaineEnString == "mardi"){
+                    if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                        jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
+                        jourSemaineInt == dateFormatee+4 || jourSemaineInt == dateFormatee+5
+                        || jourSemaineInt == dateFormatee-1){
+
+                        if (jours in consommationsParJoursMardi) {
+                            consommationsParJoursMardi[jours]!!.add(conso)
+                        } else {
+                            consommationsParJoursMardi[jours] = mutableListOf(conso)
+                        }
+                    }
+                }
+                if(jourDeLaSemaineEnString == "mercredi"){
+                    if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                        jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
+                        jourSemaineInt == dateFormatee+4 || jourSemaineInt == dateFormatee-2 ||
+                        jourSemaineInt == dateFormatee-1){
+
+                        if (jours in consommationsParJoursMercredi) {
+                            consommationsParJoursMercredi[jours]!!.add(conso)
+                        } else {
+                            consommationsParJoursMercredi[jours] = mutableListOf(conso)
+                        }
+                    }
+                }
+                if(jourDeLaSemaineEnString == "jeudi"){
+                    if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                        jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
+                        jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
+                        jourSemaineInt == dateFormatee-1){
+
+                        if (jours in consommationsParJoursJeudi) {
+                            consommationsParJoursJeudi[jours]!!.add(conso)
+                        } else {
+                            consommationsParJoursJeudi[jours] = mutableListOf(conso)
+                        }
+                    }
+                }
+                if(jourDeLaSemaineEnString == "vendredi"){
+                    if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                        jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee-4 ||
+                        jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
+                        jourSemaineInt == dateFormatee-1){
+
+                        if (jours in consommationsParJoursVendredi) {
+                            consommationsParJoursVendredi[jours]!!.add(conso)
+                        } else {
+                            consommationsParJoursVendredi[jours] = mutableListOf(conso)
+                        }
+                    }
+                }
+                if(jourDeLaSemaineEnString == "samedi"){
+                    if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
+                        jourSemaineInt == dateFormatee-5 || jourSemaineInt == dateFormatee-4 ||
+                        jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
+                        jourSemaineInt == dateFormatee-1){
+
+                        if (jours in consommationsParJoursSamedi) {
+                            consommationsParJoursSamedi[jours]!!.add(conso)
+                        } else {
+                            consommationsParJoursSamedi[jours] = mutableListOf(conso)
+                        }
+                    }
+                }
+                if(jourDeLaSemaineEnString == "dimanche"){
+                    if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee-6 ||
+                        jourSemaineInt == dateFormatee-5 || jourSemaineInt == dateFormatee-4 ||
+                        jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
+                        jourSemaineInt == dateFormatee-1){
+
+                        if (jours in consommationsParJoursDimanche) {
+                            consommationsParJoursDimanche[jours]!!.add(conso)
+                        } else {
+                            consommationsParJoursDimanche[jours] = mutableListOf(conso)
+                        }
+                    }
                 }
             }
-            if(jourDeLaSemaineEnString == "mardi"){
-                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
-                    jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
-                    jourSemaineInt == dateFormatee+4 || jourSemaineInt == dateFormatee+5
-                    || jourSemaineInt == dateFormatee-1){
 
-                    if (jours in consommationsParJoursMardi) {
-                        consommationsParJoursMardi[jours]!!.add(conso)
-                    } else {
-                        consommationsParJoursMardi[jours] = mutableListOf(conso)
-                    }
-                    Log.d("consommationsParJoursMardi", "$consommationsParJoursMardi")
-                }
-            }
-            if(jourDeLaSemaineEnString == "mercredi"){
-                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
-                    jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
-                    jourSemaineInt == dateFormatee+4 || jourSemaineInt == dateFormatee-2 ||
-                    jourSemaineInt == dateFormatee-1){
-
-                    if (jours in consommationsParJoursMercredi) {
-                        consommationsParJoursMercredi[jours]!!.add(conso)
-                    } else {
-                        consommationsParJoursMercredi[jours] = mutableListOf(conso)
-                    }
-                    Log.d("consommationsParJoursMercredi", "$consommationsParJoursMercredi")
-                }
-            }
-            if(jourDeLaSemaineEnString == "jeudi"){
-                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
-                    jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee+3 ||
-                    jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
-                    jourSemaineInt == dateFormatee-1){
-
-                    if (jours in consommationsParJoursJeudi) {
-                        consommationsParJoursJeudi[jours]!!.add(conso)
-                    } else {
-                        consommationsParJoursJeudi[jours] = mutableListOf(conso)
-                    }
-                    Log.d("consommationsParJoursJeudi", "$consommationsParJoursJeudi")
-                }
-            }
-            if(jourDeLaSemaineEnString == "vendredi"){
-                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
-                    jourSemaineInt == dateFormatee+2 || jourSemaineInt == dateFormatee-4 ||
-                    jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
-                    jourSemaineInt == dateFormatee-1){
-
-                    if (jours in consommationsParJoursVendredi) {
-                        consommationsParJoursVendredi[jours]!!.add(conso)
-                    } else {
-                        consommationsParJoursVendredi[jours] = mutableListOf(conso)
-                    }
-                    Log.d("consommationsParJoursVendredi", "$consommationsParJoursVendredi")
-                }
-            }
-            if(jourDeLaSemaineEnString == "samedi"){
-                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee+1 ||
-                    jourSemaineInt == dateFormatee-5 || jourSemaineInt == dateFormatee-4 ||
-                    jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
-                    jourSemaineInt == dateFormatee-1){
-
-                    if (jours in consommationsParJoursSamedi) {
-                        consommationsParJoursSamedi[jours]!!.add(conso)
-                    } else {
-                        consommationsParJoursSamedi[jours] = mutableListOf(conso)
-                    }
-                    Log.d("consommationsParJoursSamedi", "$consommationsParJoursSamedi")
-                }
-            }
-            if(jourDeLaSemaineEnString == "dimanche"){
-                if ( jourSemaineInt == dateFormatee || jourSemaineInt == dateFormatee-6 ||
-                    jourSemaineInt == dateFormatee-5 || jourSemaineInt == dateFormatee-4 ||
-                    jourSemaineInt == dateFormatee-3 || jourSemaineInt == dateFormatee-2 ||
-                    jourSemaineInt == dateFormatee-1){
-
-                    if (jours in consommationsParJoursDimanche) {
-                        consommationsParJoursDimanche[jours]!!.add(conso)
-                    } else {
-                        consommationsParJoursDimanche[jours] = mutableListOf(conso)
-                    }
-                    Log.d("consommationsParJoursDimanche", "$consommationsParJoursDimanche")
-                }
-            }
+            Log.d("consommationsParJoursLundi", "$consommationsParJoursLundi")
+            Log.d("consommationsParJoursMardi", "$consommationsParJoursMardi")
+            Log.d("consommationsParJoursMercredi", "$consommationsParJoursMercredi")
+            Log.d("consommationsParJoursJeudi", "$consommationsParJoursJeudi")
+            Log.d("consommationsParJoursVendredi", "$consommationsParJoursVendredi")
+            Log.d("consommationsParJoursSamedi", "$consommationsParJoursSamedi")
+            Log.d("consommationsParJoursDimanche", "$consommationsParJoursDimanche")
         }
         // Calculez la moyenne de la somme pour chaque jours
         if(consommationsParJoursLundi.isNotEmpty()){
-            for ((jours, consommations) in consommationsParJoursJeudi) {
+            for ((jours, consommations) in consommationsParJoursLundi) {
                 val moyenne = consommations.sum()
                 Log.d("somme conso pour lundi $jours", "$moyenne")
                 val joursInt = jours.toIntOrNull()
@@ -313,7 +322,7 @@ class maconso : AppCompatActivity() {
         }
         // Calculez la moyenne de la somme pour chaque jours
         if(consommationsParJoursMardi.isNotEmpty()){
-            for ((jours, consommations) in consommationsParJoursJeudi) {
+            for ((jours, consommations) in consommationsParJoursMardi) {
                 val moyenne = consommations.sum()
                 Log.d("somme conso pour mardi $jours", "$moyenne")
                 val joursInt = jours.toIntOrNull()
@@ -346,7 +355,7 @@ class maconso : AppCompatActivity() {
         }
         // Calculez la moyenne de la somme pour chaque jours
         if(consommationsParJoursMercredi.isNotEmpty()){
-            for ((jours, consommations) in consommationsParJoursJeudi) {
+            for ((jours, consommations) in consommationsParJoursMercredi) {
                 val moyenne = consommations.sum()
                 Log.d("somme conso pour mercredi $jours", "$moyenne")
                 val joursInt = jours.toIntOrNull()
@@ -412,9 +421,9 @@ class maconso : AppCompatActivity() {
         }
         // Calculez la moyenne de la somme pour chaque jours
         if(consommationsParJoursVendredi.isNotEmpty()){
-            for ((jours, consommations) in consommationsParJoursJeudi) {
+            for ((jours, consommations) in consommationsParJoursVendredi) {
                 val moyenne = consommations.sum()
-                Log.d("somme conso pour jeudi $jours", "$moyenne")
+                Log.d("somme conso pour vendredi $jours", "$moyenne")
                 val joursInt = jours.toIntOrNull()
                 Log.d("dateFormatee ", "$dateFormatee")
                 Log.d("joursInt ", "$joursInt")
@@ -445,7 +454,7 @@ class maconso : AppCompatActivity() {
         }
         // Calculez la moyenne de la somme pour chaque jours
         if(consommationsParJoursSamedi.isNotEmpty()){
-            for ((jours, consommations) in consommationsParJoursJeudi) {
+            for ((jours, consommations) in consommationsParJoursSamedi) {
                 val moyenne = consommations.sum()
                 Log.d("somme conso pour samedi $jours", "$moyenne")
                 val joursInt = jours.toIntOrNull()
@@ -478,7 +487,7 @@ class maconso : AppCompatActivity() {
         }
         // Calculez la moyenne de la somme pour chaque jours
         if(consommationsParJoursDimanche.isNotEmpty()){
-            for ((jours, consommations) in consommationsParJoursJeudi) {
+            for ((jours, consommations) in consommationsParJoursDimanche) {
                 val moyenne = consommations.sum()
                 Log.d("somme conso pour jeudi $jours", "$moyenne")
                 val joursInt = jours.toIntOrNull()
