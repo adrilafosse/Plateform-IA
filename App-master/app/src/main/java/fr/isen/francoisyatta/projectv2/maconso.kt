@@ -28,7 +28,7 @@ import java.time.DayOfWeek
 import java.time.format.TextStyle
 
 
-class maconso : AppCompatActivity() {
+class maconso : AppCompatActivity(){
 
     private lateinit var binding: ActivityMaconsoBinding
     private lateinit var fragmentJour: Jour
@@ -57,8 +57,9 @@ class maconso : AppCompatActivity() {
         fragmentMois = Mois()
         fragmentAnnee = Annee()
 
-        recupérationDonnées()
+
         Button1.setOnClickListener {
+            recupérationDonnées()
             val bouton = 1
             consoHeure.clear()
             val transaction = supportFragmentManager.beginTransaction()
@@ -110,6 +111,9 @@ class maconso : AppCompatActivity() {
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun donneeJour(){
+        val dateDuFragment = fragmentJour.getDateFormatee()
+        Log.d("date du fragment", "$dateDuFragment")
+
         val dateDuJour = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("ddMMyyyy")
         val dateFormatee = dateDuJour.format(formatter)
@@ -845,4 +849,6 @@ class maconso : AppCompatActivity() {
 
         return lineValues
     }
+
+
 }
