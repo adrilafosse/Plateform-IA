@@ -114,13 +114,22 @@ class maconso : AppCompatActivity(){
         val dateDuFragment = fragmentJour.getDateFormatee()
         Log.d("date du fragment", "$dateDuFragment")
 
+        // Analyser la date du fragment
+        val formatterFragment = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val dateFragment = LocalDate.parse(dateDuFragment, formatterFragment)
+
         val dateDuJour = LocalDate.now()
+        //Log.d("dateDuJour", "$dateDuJour")
         val formatter = DateTimeFormatter.ofPattern("ddMMyyyy")
-        val dateFormatee = dateDuJour.format(formatter)
-        Log.d("dateFormatee", "1: $dateFormatee")
+        //val dateFormatee = dateDuJour.format(formatter)
+        val dateDuFragment2 = dateFragment.format(formatter)
+
+        Log.d("date du fragment2", "$dateDuFragment2")
+        //Log.d("dateFormatee", "1: $dateFormatee")
+
         for (i in 0 until taille) {
             val jour = tableaufinal[i][2].joinToString("")
-            if(jour == dateFormatee){
+            if(jour == dateDuFragment2){
                 Log.d("jour", "1: $jour")
                 val consoString = tableaufinal[i][0].joinToString("")
                 val heureString = tableaufinal[i][1].joinToString("")

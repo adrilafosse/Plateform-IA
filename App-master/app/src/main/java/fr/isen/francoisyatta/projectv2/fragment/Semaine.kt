@@ -28,7 +28,7 @@ class Semaine : Fragment() {
         val dateFormatee = dateDuJour.format(formatter)
 
         binding = FragmentSemaineBinding.inflate(inflater, container, false)
-        binding.titreGraph.text = "Ma consommation de la semaine du (${dateFormatee})"
+        binding.titreGraph.text = "Semaine du (${dateFormatee})"
         return binding.root
     }
 

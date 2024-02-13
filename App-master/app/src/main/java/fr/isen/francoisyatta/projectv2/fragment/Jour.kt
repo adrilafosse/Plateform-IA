@@ -32,7 +32,7 @@ class Jour : Fragment() {
         dateFormatee = dateDuJour.format(formatter)
 
         binding = FragmentJourBinding.inflate(inflater, container, false)
-        binding.titreGraph.text = "Ma consommation ($dateFormatee)"
+        binding.titreGraph.text = "$dateFormatee"
 
         // Références aux boutons
         val button1 = binding.root.findViewById<AppCompatImageButton>(R.id.imageButton1)
@@ -44,13 +44,13 @@ class Jour : Fragment() {
             dateDuJour = dateDuJour.minusDays(1)
             dateFormatee = dateDuJour.format(formatter)
             // Mettre à jour le titre avec la nouvelle date formatée
-            binding.titreGraph.text = "Ma consommation ($dateFormatee)"
+            binding.titreGraph.text = "$dateFormatee"
         }
         button2.setOnClickListener {
             dateDuJour = dateDuJour.plusDays(1)
             dateFormatee = dateDuJour.format(formatter)
             // Mettre à jour le titre avec la nouvelle date formatée
-            binding.titreGraph.text = "Ma consommation ($dateFormatee)"
+            binding.titreGraph.text = "$dateFormatee"
         }
         return binding.root
     }

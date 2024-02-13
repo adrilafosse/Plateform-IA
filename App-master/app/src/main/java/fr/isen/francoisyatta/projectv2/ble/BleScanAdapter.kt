@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import fr.isen.francoisyatta.projectv2.R
 
 
-internal class BleScanAdapter(val bleList: ArrayList<ScanResult>, val clickListener: (BluetoothDevice) -> Unit) :
+internal class
+BleScanAdapter(val bleList: ArrayList<ScanResult>, val clickListener: (BluetoothDevice) -> Unit) :
     RecyclerView.Adapter<BleScanAdapter.BLEViewHolder>() {
 
     internal inner class BLEViewHolder(view: View) : RecyclerView.ViewHolder(view) {
