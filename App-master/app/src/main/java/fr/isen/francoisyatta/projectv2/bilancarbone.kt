@@ -6,7 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import fr.isen.francoisyatta.projectv2.databinding.ActivityBilancarboneBinding
 
-class bilancarbone : AppCompatActivity() {
+class
+bilancarbone : AppCompatActivity() {
 
     private lateinit var binding: ActivityBilancarboneBinding
     override fun onCreate(savedInstanceState: Bundle?) {
