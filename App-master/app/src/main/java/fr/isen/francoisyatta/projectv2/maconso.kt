@@ -118,7 +118,6 @@ class maconso : AppCompatActivity(){
         val formatterFragment = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val dateFragment = LocalDate.parse(dateDuFragment, formatterFragment)
 
-        val dateDuJour = LocalDate.now()
         //Log.d("dateDuJour", "$dateDuJour")
         val formatter = DateTimeFormatter.ofPattern("ddMMyyyy")
         //val dateFormatee = dateDuJour.format(formatter)
@@ -146,19 +145,22 @@ class maconso : AppCompatActivity(){
     @RequiresApi(Build.VERSION_CODES.O)
     private fun donneeSemaine(){
 
-        val dateDuJour = LocalDate.now()
-        Log.d("dateDuJour", "1: $dateDuJour")
+        val dateDuFragment = fragmentSemaine.getDateFormatee()
+        Log.d("date du fragment semaine", "$dateDuFragment")
+
+        val formatter1 = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val dateDuFragmentLocalDate = LocalDate.parse(dateDuFragment, formatter1)
 
         //recupere le jour en anglais de la semaine
-        val jourDeLaSemaine = dateDuJour.dayOfWeek
+        val jourDeLaSemaine = dateDuFragmentLocalDate.dayOfWeek
 
         //recupere le jour en chiffre du jour
         val formatter = DateTimeFormatter.ofPattern("dd")
-        val dateFormateeStr = dateDuJour.format(formatter)
+        val dateFormateeStr = dateDuFragmentLocalDate.format(formatter)
 
         //recupere mois et annee
         val formatter2= DateTimeFormatter.ofPattern("MMyyyy")
-        val moisAnneeToday = dateDuJour.format(formatter2)
+        val moisAnneeToday = dateDuFragmentLocalDate.format(formatter2)
         Log.d("moisAnneeToday", "1: $moisAnneeToday")
 
         // Convertir la date formatée en un entier
@@ -534,12 +536,14 @@ class maconso : AppCompatActivity(){
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun donneeMois() {
+        val dateDuFragment = fragmentMois.getDateFormatee()
+        Log.d("date du fragment mois", "$dateDuFragment")
+
         val dateDuJour = LocalDate.now()
-        val formatterMois = DateTimeFormatter.ofPattern("MM")
-        val moisToday = dateDuJour.format(formatterMois)
-        Log.d("moisToday", "1: $moisToday")
         val formatter = DateTimeFormatter.ofPattern("yyyy")
         val annee = dateDuJour.format(formatter)
+        Log.d("annee mois", "$annee")
+
         val consommationsParJours = mutableMapOf<String, MutableList<Float>>()
 
         // Parcourez les données et stockez les consommations associées à chaque jours
@@ -551,7 +555,7 @@ class maconso : AppCompatActivity(){
             val anneeDonnee = anneeString.substring(4, 8)
 
             // Vérifiez si le mois correspond à notre mois
-            if (moisDonnee == moisToday && anneeDonnee == annee ) {
+            if (moisDonnee == dateDuFragment && anneeDonnee == annee ) {
                 val consoString = tableaufinal[i][0].joinToString("")
                 val dateString = tableaufinal[i][2].joinToString("")
                 val jours = dateString.substring(0,2 ) // Extrait le jour de la date
@@ -580,10 +584,12 @@ class maconso : AppCompatActivity(){
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun donneeAnnee(){
-        val dateDuJour = LocalDate.now()
+        val dateDuFragment = fragmentAnnee.getDateFormatee()
+        Log.d("date du fragment annee", "$dateDuFragment")
+
         val formatter = DateTimeFormatter.ofPattern("yyyy")
-        val annee = dateDuJour.format(formatter)
-        Log.d("annee", "1: $annee")
+        val dateDuFragment2 = dateDuFragment.format(formatter)
+        Log.d("dateDuFragment2", "$dateDuFragment2")
         val consommationsParMois = mutableMapOf<String, MutableList<Float>>()
 
         // Parcourez les données et stockez les consommations associées à chaque mois
@@ -592,7 +598,7 @@ class maconso : AppCompatActivity(){
             val anneeDonnee = anneeString.substring(4, 8)
 
             // Vérifiez si l'année correspond à notre année
-            if (anneeDonnee == annee) {
+            if (anneeDonnee == dateDuFragment2) {
                 val consoString = tableaufinal[i][0].joinToString("")
                 val dateString = tableaufinal[i][2].joinToString("")
                 val mois = dateString.substring(2, 4) // Extrait le mois de la date
