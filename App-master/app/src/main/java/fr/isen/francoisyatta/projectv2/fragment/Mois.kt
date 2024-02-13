@@ -40,51 +40,51 @@ class Mois : Fragment() {
             // Mettre à jour le titre avec la nouvelle date formatée
             if(dateFormatee == "01"){
                 mois = "Janvier"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "02"){
                 mois ="Février"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "03"){
                 mois ="Mars"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "04"){
                 mois ="Avril"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "05"){
                 mois ="Mai"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "06"){
                 mois ="Juin"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "07"){
                 mois ="Juillet"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "08"){
                 mois ="Aout"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "09"){
                 mois ="Septembre"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "10"){
                 mois ="Octobre"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "11"){
                 mois ="Novembre"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "12"){
                 mois ="Décembre"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
         }
         button2.setOnClickListener {
@@ -93,100 +93,100 @@ class Mois : Fragment() {
             // Mettre à jour le titre avec la nouvelle date formatée
             if(dateFormatee == "01"){
                 mois = "Janvier"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "02"){
                 mois ="Février"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "03"){
                 mois ="Mars"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "04"){
                 mois ="Avril"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "05"){
                 mois ="Mai"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "06"){
                 mois ="Juin"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "07"){
                 mois ="Juillet"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "08"){
                 mois ="Aout"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "09"){
                 mois ="Septembre"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "10"){
                 mois ="Octobre"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "11"){
                 mois ="Novembre"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
             else if(dateFormatee == "12"){
                 mois ="Décembre"
-                binding.titreGraph.text = "Ma consommation (${mois})"
+                binding.titreGraph.text = "$mois"
             }
         }
         if(dateFormatee == "01"){
             mois = "Janvier"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         else if(dateFormatee == "02"){
             mois ="Février"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         else if(dateFormatee == "03"){
             mois ="Mars"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         else if(dateFormatee == "04"){
             mois ="Avril"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         else if(dateFormatee == "05"){
             mois ="Mai"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         else if(dateFormatee == "06"){
             mois ="Juin"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         else if(dateFormatee == "07"){
             mois ="Juillet"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         else if(dateFormatee == "08"){
             mois ="Aout"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         else if(dateFormatee == "09"){
             mois ="Septembre"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         else if(dateFormatee == "10"){
             mois ="Octobre"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         else if(dateFormatee == "11"){
             mois ="Novembre"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         else if(dateFormatee == "12"){
             mois ="Décembre"
-            binding.titreGraph.text = "Ma consommation (${mois})"
+            binding.titreGraph.text = "$mois"
         }
         return binding.root
     }

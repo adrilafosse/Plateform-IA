@@ -132,9 +132,10 @@ class maconso : AppCompatActivity(){
                 Log.d("jour", "1: $jour")
                 val consoString = tableaufinal[i][0].joinToString("")
                 val heureString = tableaufinal[i][1].joinToString("")
+                Log.d("heureString", "1: $heureString")
 
                 val conso = consoString.toFloatOrNull() ?: 0.0f
-                val heure = heureString.toFloatOrNull() ?: 0.0f
+                val heure = heureString.replace(",", ".").toFloatOrNull() ?: 0.0f
 
                 Log.d("consoFinal", "1: $conso")
                 Log.d("heureFinal", "1: $heure")
