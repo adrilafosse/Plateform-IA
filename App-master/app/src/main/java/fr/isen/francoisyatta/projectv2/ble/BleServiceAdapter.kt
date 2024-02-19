@@ -3,6 +3,7 @@ package fr.isen.francoisyatta.projectv2.ble
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattDescriptor
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -94,10 +95,12 @@ class BleServiceAdapter (private val bleServices:List<BleService>,
         holder.characteristicProperties.text = proprietiesMessage
 
         characteristic.value?.let {
-            val hex = it.joinToString("") { byte -> "%02x".format(byte)}.uppercase(Locale.FRANCE)
+            val hex = it.joinToString("")
+            //{ byte -> "%02x".format(byte)}.uppercase(Locale.FRANCE)
             val value = "Valeur : ${String(it)} Hex : 0x$hex"
             holder.characteristicValue.visibility = View.VISIBLE
             holder.characteristicValue.text = value
+            Log.d("bleValeur", "hex: $hex, value: $value")
         }
     }
 

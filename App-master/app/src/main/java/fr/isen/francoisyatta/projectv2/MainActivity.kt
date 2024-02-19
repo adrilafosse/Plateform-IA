@@ -1,10 +1,16 @@
 package fr.isen.francoisyatta.projectv2
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.concurrent.TimeUnit;
+
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,5 +32,20 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager (this)
         recyclerView.adapter = myAdapter
 
+        // Créer une contrainte pour exécuter la tâche uniquement lorsque le réseau est disponible
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        // Créer une tâche périodique avec WorkManager en utilisant le constructeur direct
+        val periodicWorkRequest = PeriodicWorkRequest.Builder(
+            WorkClass::class.java,
+            15, // Répéter toutes les 1 minute
+            TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .build()
+
+        // Planifier la tâche périodique avec WorkManager
+        WorkManager.getInstance(this).enqueue(periodicWorkRequest)
     }
 }
