@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         // Créer une tâche périodique avec WorkManager en utilisant le constructeur direct
         val periodicWorkRequest = PeriodicWorkRequest.Builder(
             WorkClass::class.java,
-            15, // Répéter toutes les 1 minute
+            60, // Répéter toutes les 60 minutes
             TimeUnit.MINUTES)
             .setConstraints(constraints)
             .build()
