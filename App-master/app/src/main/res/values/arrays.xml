@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="profil_options">
+        <item>Classique</item>
+        <item>Heure Pleine/ Creuse</item>
+    </string-array>
+</resources>

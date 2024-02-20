@@ -8,6 +8,9 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class WorkClass(
     context: Context,
@@ -15,6 +18,7 @@ class WorkClass(
 ) : Worker(context, params) {
     private var taille: Int = 0
     private var tableaufinal: MutableList<Array<CharArray>> = mutableListOf()
+
     val db = FirebaseFirestore.getInstance()
     val mAuth = FirebaseAuth.getInstance()
     val currentUser = mAuth.currentUser
@@ -97,7 +101,6 @@ class WorkClass(
                                     for (i in 0 until taille) {
                                         Log.d("Tableaufinal", "Conso: ${tableaufinal[i][0].joinToString("")}, heureMinute: ${tableaufinal[i][1].joinToString("")}, annee: ${tableaufinal[i][2].joinToString("")}, anneeTotal: ${tableaufinal[i][3].joinToString("")}")
                                     }
-                                    Log.d("taille7", "1: $taille")
                                     donneeJour()
                                 }
                             }
@@ -106,41 +109,132 @@ class WorkClass(
             }
         }
     }
-    private fun donneeJour()
-    {
+    private fun donneeJour() {
         val consoParJour = mutableMapOf<String, Int>()
+        val prixParJour = mutableMapOf<String, Double>()
+        val prixParJourHP_HC = mutableMapOf<String, Double>()
 
-        // Parcourir le tableau des données
         for (ligne in tableaufinal) {
-            // Récupérer la date et la consommation de la ligne actuelle
-            val date = ligne[3].joinToString("") // Index 2 pour la date
-            val consoString = ligne[0].joinToString("").trim() // Supprimer les espaces blancs
-            val conso = consoString.toIntOrNull() ?: continue // Convertir en entier, en évitant les valeurs non valides
-            // Si la date est déjà présente dans la map, ajouter la consommation à la consommation existante
+            val date = ligne[3].joinToString("")
+            val consoString = ligne[0].joinToString("").trim()
+            val conso = consoString.toIntOrNull() ?: continue
+
             if (consoParJour.containsKey(date)) {
                 consoParJour[date] = consoParJour[date]!! + conso
             } else {
-                // Sinon, ajouter une nouvelle entrée dans la map avec la consommation actuelle
                 consoParJour[date] = conso
             }
         }
 
-        // Afficher les résultats dans les logs
         for ((date, consoTotalJour) in consoParJour) {
             Log.d("consoTotalJour", "consoTotalJour: $consoTotalJour, date: $date")
         }
         val moyenneRef = uid?.let { db.collection("id").document(it).collection("moyenne") }
-        if (moyenneRef != null) {
-            moyenneRef.document("consoParJour").set(consoParJour)
-                .addOnSuccessListener {
-                    Log.d("Firestore", "Données consoParJour ajoutées avec succès à la sous-collection moyenne")
+        moyenneRef?.document("consoParJour")?.set(consoParJour)?.addOnSuccessListener {
+            Log.d(
+                "Firestore",
+                "Données consoParJour ajoutées avec succès à la sous-collection moyenne"
+            )
+        }?.addOnFailureListener { e ->
+            Log.e(
+                "Firestore",
+                "Erreur lors de l'ajout des données consoParJour à la sous-collection moyenne",
+                e
+            )
+        }
+
+        val profilRef = uid?.let { db.collection("id").document(it).collection("profil") }
+        var option: String
+        var prix: Double
+        var prixHP : Double
+        var prixHC : Double
+
+        profilRef?.get()?.addOnSuccessListener { documents ->
+            for (document in documents) {
+                option = document.getString("option").toString()
+                prix = document.getDouble("prix") ?: 0.0
+                prixHP  = document.getDouble("prixHP") ?: 0.0
+                prixHC =  document.getDouble("prixHC") ?: 0.0
+                Log.d("option/firebase/prix", "option: $option, prix : $prix, prixHP: $prixHP, prixHC: $prixHC")
+
+                for (ligne in tableaufinal) {
+                    val heureChar = ligne[1].joinToString("")
+                    val heure = heureChar.toFloatOrNull()
+
+                    val date = ligne[3].joinToString("")
+                    val consoString = ligne[0].joinToString("").trim()
+                    val conso = consoString.toIntOrNull() ?: continue
+
+                    //prix constant
+                    val prixFinal = (conso * prix) / 1000.0
+                    val df = DecimalFormat("#.###")
+                    df.roundingMode = RoundingMode.HALF_UP
+                    val prixFinalFormatted = df.format(prixFinal).toDouble()
+
+                    if (prixParJour.containsKey(date)) {
+                         val prixExistant = prixParJour[date]!!
+                         val nouveauPrix = prixFinalFormatted + prixExistant
+                         prixParJour[date] = DecimalFormat("#.###").format(nouveauPrix).toDouble()
+                    } else {
+                         prixParJour[date] = prixFinalFormatted
+                    }
+
+                    var prixFinalFormattedHP_HC = 0.0
+                    //prix HP/HC
+                    if (heure != null) {
+                        if(heure > 6 && heure < 22) {
+                            val prixFinalHP = (conso * prixHP) / 1000.0
+                            val df = DecimalFormat("#.###")
+                            df.roundingMode = RoundingMode.HALF_UP
+                            prixFinalFormattedHP_HC = df.format(prixFinalHP).toDouble()
+                            Log.d("prixFinalFormattedHP_HC", "prixFinalFormattedHP_HC: $prixFinalFormattedHP_HC")
+                        }
+                        else{
+                            val prixFinalHC = (conso * prixHC) / 1000.0
+                            val df = DecimalFormat("#.###")
+                            df.roundingMode = RoundingMode.HALF_UP
+                            prixFinalFormattedHP_HC = df.format(prixFinalHC).toDouble()
+                            Log.d("prixFinalFormattedHP_HC", "prixFinalFormattedHP_HC: $prixFinalFormattedHP_HC")
+                        }
+
+                    }
+                    Log.d("prixFinalFormattedHP_HC", "prixFinalFormattedHP_HC: $prixFinalFormattedHP_HC")
+                    if (prixParJourHP_HC.containsKey(date)) {
+                        val prixExistant = prixParJourHP_HC[date]!!
+                        val nouveauPrix = prixFinalFormattedHP_HC + prixExistant
+                        prixParJourHP_HC[date] = DecimalFormat("#.###").format(nouveauPrix).toDouble()
+                    } else {
+                        prixParJourHP_HC[date] = prixFinalFormattedHP_HC
+                    }
                 }
-                .addOnFailureListener { e ->
-                    Log.e("Firestore", "Erreur lors de l'ajout des données consoParJour à la sous-collection moyenne", e)
+
+                val moyenneRef = uid?.let { db.collection("id").document(it).collection("moyenne") }
+                moyenneRef?.document("prixParJour")?.set(prixParJour)?.addOnSuccessListener {
+                    Log.d(
+                        "Firestore",
+                        "Données prixParJour ajoutées avec succès à la sous-collection moyenne"
+                    )
+                }?.addOnFailureListener { e ->
+                    Log.e(
+                        "Firestore",
+                        "Erreur lors de l'ajout des données prixParJour à la sous-collection moyenne",
+                        e
+                    )
                 }
+                moyenneRef?.document("prixParJourHP_HC")?.set(prixParJourHP_HC)?.addOnSuccessListener {
+                    Log.d(
+                        "Firestore",
+                        "Données prixParJourHP_HC ajoutées avec succès à la sous-collection moyenne"
+                    )
+                }?.addOnFailureListener { e ->
+                    Log.e(
+                        "Firestore",
+                        "Erreur lors de l'ajout des données prixParJourHP_HC à la sous-collection moyenne",
+                        e
+                    )
+                }
+            }
         }
     }
-
-
 }
 
