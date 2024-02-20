@@ -6,12 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 
 import androidx.recyclerview.widget.RecyclerView
 import fr.isen.francoisyatta.projectv2.ble.BleActivity
 import kotlinx.android.synthetic.main.row.view.*
-import java.util.logging.Logger.global
 
 
 class MyAdapter (val arrayList: ArrayList<Model>, val context: Context) :
@@ -72,10 +70,10 @@ class MyAdapter (val arrayList: ArrayList<Model>, val context: Context) :
             if (position == 2) {
                 Toast.makeText(
                     context,
-                    "Click sur Détection d'anomalies",
+                    "Click sur Profile",
                     Toast.LENGTH_LONG
                 ).show()
-                val intentAnomalies = Intent(context, anomalies::class.java)
+                val intentAnomalies = Intent(context, ProfilActivity::class.java)
                 context.startActivity(intentAnomalies)
             }
 

@@ -7,6 +7,12 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\Benja\\Desktop\\BE-Plateform IA\\key.jks')
+            storePassword '123456'
+        }
+    }
     namespace 'fr.isen.francoisyatta.projectv2'
     compileSdk 33
 

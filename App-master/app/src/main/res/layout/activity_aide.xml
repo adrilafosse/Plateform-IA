@@ -12,15 +12,15 @@
         android:id="@+id/FirstContact"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="500dp"
+        android:layout_marginTop="32dp"
         android:gravity="center"
-        android:text="Ismael: ismael.francois-yatta@isen.yncrea.fr"
-        android:textColor="@color/bleusavee"
+        android:text="L'allim et Gauthier : gauthier.lannurien@isen.yncrea.fr"
+        android:textColor="#FFF800"
         android:textSize="17sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <TextView
         android:id="@+id/SecondContact"
@@ -28,27 +28,14 @@
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:gravity="center"
-        android:text="Yacine: yacine-Zorah.fosso-kenfack@isen.yncrea.fr"
-        android:textColor="@color/bleusavee"
+        android:text="La carte de Camille: camille.girard@isen.yncrea.fr"
+        android:textColor="#FFF800"
         android:textSize="17sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/FirstContact" />
 
-    <TextView
-        android:id="@+id/ThirdContact"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
-        android:text="Gauthier: gauthier.lannurien@isen.yncrea.fr"
-        android:textColor="@color/bleusavee"
-        android:textSize="17sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SecondContact" />
 
     <TextView
         android:id="@+id/FourthContact"
@@ -56,14 +43,14 @@
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:gravity="center"
-        android:text="Arnold: arnold-jean-patrick.dedji@isen.yncrea.fr"
-        android:textColor="@color/bleusavee"
+        android:text="Cyber Solene: solene.dufournaud@isen.yncrea.fr"
         android:textSize="17sp"
         android:textStyle="normal"
+        android:textColor="#FFF800"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ThirdContact" />
-
+        app:layout_constraintTop_toBottomOf="@+id/SecondContact" />
 
     <TextView
         android:id="@+id/FiveContact"
@@ -71,47 +58,19 @@
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:gravity="center"
-        android:text="Arthur: arthur.debray@isen.yncrea.fr"
-        android:textColor="@color/bleusavee"
+        android:text="Adrien graph: adrien.lafosse@isen.yncrea.fr"
+        android:textColor="#FFF800"
         android:textSize="17sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/FourthContact" />
 
-
-    <TextView
-        android:id="@+id/SixContact"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
-        android:text="Camille: camille.girard@isen.yncrea.fr"
-        android:textColor="@color/bleusavee"
-        android:textSize="17sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FiveContact" />
-
-    <TextView
-        android:id="@+id/SevenContact"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
-        android:text="Pierre: pierre.saison@isen.yncrea.fr"
-        android:textColor="@color/bleusavee"
-        android:textSize="17sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SixContact" />
-
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="93dp"
-        android:layout_height="74dp"
+        android:layout_width="200dp"
+        android:layout_height="205dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
