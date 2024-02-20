@@ -23,7 +23,7 @@ class anomalies : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_anomalies)
 
-        val options = arrayOf("Classique", "Heure Pleine/ Creuse")
+        val options = arrayOf("Classique", "Heure pleine/creuse")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner_profil.adapter = adapter
@@ -31,7 +31,7 @@ class anomalies : AppCompatActivity() {
         spinner_profil.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedOption = options[position]
-                if (selectedOption == "Heure Pleine/ Creuse") {
+                if (selectedOption == "Heure pleine/creuse") {
                         textView_prix_fixeHP.visibility = View.VISIBLE
                         editText_nouveau_prixHP.visibility = View.VISIBLE
 
