@@ -11,13 +11,15 @@ android {
         debug {
             storeFile file('C:\\Users\\Benja\\Desktop\\BE-Plateform IA\\key.jks')
             storePassword '123456'
+            keyPassword '123456'
+            keyAlias 'adri'
         }
     }
-    namespace 'fr.isen.francoisyatta.projectv2'
+    namespace 'fr.isen.francoisyatta.projectv3'
     compileSdk 33
 
     defaultConfig {
-        applicationId "fr.isen.francoisyatta.projectv2"
+        applicationId "fr.isen.francoisyatta.projectv3"
         minSdk 23
         targetSdk 32
         versionCode 1
