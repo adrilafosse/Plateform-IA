@@ -21,11 +21,11 @@ class MainActivity : AppCompatActivity() {
 
         // affichage des différents éléments du menu
         arrayList.add(Model("Ma consommation", "Afficher votre consommation électrique", R.drawable.maconso))
-        arrayList.add(Model("Bilan Carbone", "Afficher votre bilan carbone", R.drawable.co2))
+        arrayList.add(Model("Rapport d'activité", "Conseil pour mieux gérer votre consommation", R.drawable.eclair))
         arrayList.add(Model("Profile", "Modifier votre profile", R.drawable.img))
-        arrayList.add(Model("Maintenance prédictive", "Afficher les améliorations possibles", R.drawable.maintenance))
+        // arrayList.add(Model("Maintenance prédictive", "Afficher les améliorations possibles", R.drawable.maintenance))
         arrayList.add(Model("Aide", "Un problème ? Contactez nous", R.drawable.aide))
-        arrayList.add(Model("BLE", "Connexion BLE", R.drawable.bluetooth))
+        //arrayList.add(Model("BLE", "Connexion BLE", R.drawable.bluetooth))
 
         val myAdapter = MyAdapter(arrayList, this)
 
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        // Créer une tâche périodique avec WorkManager en utilisant le constructeur direct
+        // Crée une tâche périodique avec WorkManager
         val periodicWorkRequest = PeriodicWorkRequest.Builder(
             WorkClass::class.java,
             60, // Répéter toutes les 60 minutes

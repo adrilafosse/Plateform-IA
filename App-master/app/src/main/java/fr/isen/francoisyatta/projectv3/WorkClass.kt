@@ -1,13 +1,18 @@
 package fr.isen.francoisyatta.projectv3
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import java.math.RoundingMode
-import java.text.DecimalFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class WorkClass(
     context: Context,
@@ -21,10 +26,12 @@ class WorkClass(
     val currentUser = mAuth.currentUser
     val uid = currentUser?.uid
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun doWork(): Result {
         // Ajoutez un log pour vérifier que la tâche se lance correctement
         Log.d("WorkerClass", "La tâche WorkManager se lance maintenant !")
         recupérationDonnées()
+        notif()
         // Ajoutez un log pour indiquer que la tâche est terminée
         Log.d("WorkerClass", "La tâche WorkManager est terminée !")
 
@@ -238,6 +245,89 @@ class WorkClass(
                 }
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun notif(){
+        val profilRef = uid?.let { db.collection("id").document(it).collection("profil") }
+
+        if (currentUser != null) {
+            // on récupère les données de la collection id qui a pour id l'uid de l'utilisateur
+            if (uid != null) {
+                db.collection("id").document(uid).collection("moyenne").document("consoParJour")
+                    .get()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val document = task.result
+                            if (document != null && document.exists()) {
+                                //on recupere les données
+                                val dataConsoParJour = document.data
+                                Log.d(
+                                    "donnée de firebase moyenne conso par jour",
+                                    "1: $dataConsoParJour"
+                                )
+                                profilRef?.get()?.addOnSuccessListener { documents ->
+                                    for (document in documents) {
+                                        var seuil = document.getDouble("seuil") ?: 0.0
+                                        Log.d(
+                                            "seuil 1",
+                                            "1: $seuil"
+                                        )
+                                        val dataList = dataConsoParJour?.toList()
+                                        if (dataList != null) {
+                                            for (pair in dataList) {
+                                                val date = pair.first
+                                                val consommation = pair.second?.toString()?.toDoubleOrNull()
+                                                Log.d("Données de consommation", "Date: $date, Consommation: $consommation")
+                                                if (consommation != null) {
+                                                    var dateDuJour = LocalDate.now()
+                                                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                                                    var dateFormatee = dateDuJour.format(formatter)
+
+                                                    if(consommation > seuil && date == dateFormatee){
+                                                        //envoyer une notif
+                                                        Log.d("notif", "Date: $date, Consommation: $consommation, seuil: $seuil")
+                                                        afficherNotification(applicationContext,date,consommation,seuil)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+
+                            }
+
+                        }
+                    }
+            }
+        }
+    }
+    fun afficherNotification(context: Context, date: String, consommation: Double, seuil: Double) {
+        val channelId = "id"
+
+        // Créer un gestionnaire de notifications
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // Créer un canal de notification (nécessaire pour les versions Android Oreo et supérieures)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Alertes de consommation",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        // Construire la notification
+        val builder = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.warning)
+            .setContentTitle("Alerte de consommation")
+            .setContentText("La consommation pour la date $date dépasse le seuil. Consommation: $consommation kWh, Seuil: $seuil kWh")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        notificationManager.notify(123, builder.build())
     }
 }
 

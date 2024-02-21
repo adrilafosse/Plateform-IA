@@ -60,10 +60,10 @@ class MyAdapter (val arrayList: ArrayList<Model>, val context: Context) :
             if (position == 1) {
                 Toast.makeText(
                     context,
-                    "Click sur Bilan carbone",
+                    "Click sur rapport d'activité",
                     Toast.LENGTH_LONG
                 ).show()
-                val intentBilanCarbonne = Intent(context, bilancarbone::class.java)
+                val intentBilanCarbonne = Intent(context, RapportActivity::class.java)
                 context.startActivity(intentBilanCarbonne)
             }
 
@@ -76,7 +76,7 @@ class MyAdapter (val arrayList: ArrayList<Model>, val context: Context) :
                 val intentAnomalies = Intent(context, ProfilActivity::class.java)
                 context.startActivity(intentAnomalies)
             }
-
+            /*
             if (position == 3) {
                 Toast.makeText(
                     context,
@@ -85,9 +85,9 @@ class MyAdapter (val arrayList: ArrayList<Model>, val context: Context) :
                 ).show()
                 val intentMaintenance = Intent(context, maintenance::class.java)
                 context.startActivity(intentMaintenance)
-            }
+            }*/
 
-            if (position == 4) {
+            if (position == 3 ) {
                 Toast.makeText(
                     context,
                     "Click sur Aide",
@@ -96,7 +96,7 @@ class MyAdapter (val arrayList: ArrayList<Model>, val context: Context) :
                 val intentAide = Intent(context, aide::class.java)
                 context.startActivity(intentAide)
             }
-
+            /*
             if (position == 5) {
                 Toast.makeText(
                     context,
@@ -105,7 +105,7 @@ class MyAdapter (val arrayList: ArrayList<Model>, val context: Context) :
                 ).show()
                 val intentBle = Intent(context, BleActivity::class.java)
                 context.startActivity(intentBle)
-            }
+            }*/
 
 
             //avoir position de l'item selectionné
