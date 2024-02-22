@@ -2,6 +2,7 @@ package fr.isen.francoisyatta.projectv3
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.widget.Button
 import androidx.annotation.RequiresApi
@@ -25,6 +26,9 @@ import java.util.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 
 class maconso : AppCompatActivity(){
@@ -604,6 +608,7 @@ class maconso : AppCompatActivity(){
                 val mois = dateString.substring(2, 4) // Extrait le mois de la date
 
                 val consoFinal = consoString.toFloatOrNull() ?: 0.0f
+                Log.d("consoFinal", "1: $consoFinal")
 
                 // Ajoutez la consommation à la liste associée au mois correspondant
                 if (mois in consommationsParMois) {
@@ -626,6 +631,14 @@ class maconso : AppCompatActivity(){
             consoHeure.add(Pair(moyenne.toFloat(), mois.toFloat()))
         }
 
+    }
+    private fun decryptAES(encrypted: String, key: String): String {
+        val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+        val secretKey = SecretKeySpec(key.toByteArray(charset("UTF-8")), "AES")
+
+        cipher.init(Cipher.DECRYPT_MODE, secretKey)
+        val decryptedBytes = cipher.doFinal(Base64.decode(encrypted, Base64.DEFAULT))
+        return String(decryptedBytes)
     }
 
     private fun recupérationDonnées() {
@@ -653,30 +666,37 @@ class maconso : AppCompatActivity(){
                                 Log.d("taille du tableau", "1: $taille")
 
                                 val monTableau = mutableListOf<String>()
-                                //on cree un tableau qui va prendre les valeurs de data
+                                //Create a table with the data
                                 for (i in 0 until taille) {
+
                                     val value = data.entries.elementAtOrNull(i)?.value as? String
-                                    Log.d("value", "1: $value")
+                                    Log.d("valeur", "1: $value")
+
+                                    val key = "603DEB1015CA71BE2B73AEF0857D7781" // Should be 16/32 bytes for AES-128/256
+
                                     if (value != null) {
-                                        monTableau.add(value)
-                                        Log.d("valeur du tableau", "1: ${monTableau[i]}")
+                                        //Decrypt the value
+                                        val decryptedValue = decryptAES(value, key)
+                                        Log.d("valeur decryptée", "1: $decryptedValue")
+
+                                        //Add the decrypted value to the array
+                                        monTableau.add(decryptedValue)
                                     }
                                 }
 
                                 val tableaustring = monTableau.toTypedArray()
 
-                                //on decoupe de string en 3 parties
+                                //Separate the string into multiple parts
                                 tableaufinal = tableaustring.map { chaine ->
-                                    val conso = charArrayOf(chaine[0], chaine[1], chaine[2])
-                                    val heure = charArrayOf(chaine[5], chaine[6])
-                                    val minutesChar = charArrayOf(chaine[8],chaine[9])
-                                    val annee = charArrayOf(chaine[11], chaine[12], chaine[14],chaine[15],chaine[17],chaine[18],chaine[19],chaine[20])
-                                    val anneeALenvers = charArrayOf(chaine[17], chaine[18], chaine[19],chaine[20],chaine[14],chaine[15],chaine[11],chaine[12])
-                                    val anneeALenversFormater = charArrayOf(chaine[17], chaine[18], chaine[19],chaine[20],'-',chaine[14],chaine[15],'-',chaine[11],chaine[12])
+                                    val conso = charArrayOf(chaine[12],chaine[13], chaine[14], chaine[15],chaine[16],chaine[17],chaine[18],chaine[19],chaine[20])
+                                    val hour = charArrayOf(chaine[6], chaine[7])
+                                    val minute = charArrayOf(chaine[8],chaine[9])
+                                    val year = charArrayOf(chaine[0], chaine[1], chaine[2],chaine[3],'2','0',chaine[4],chaine[5])
+                                    val yearBackwards = charArrayOf('2','0', chaine[4],chaine[5],chaine[2],chaine[3],chaine[0],chaine[1])
+                                    val yearFormatted = charArrayOf('2', '0',chaine[4],chaine[5],'-',chaine[2],chaine[3],'-',chaine[0],chaine[1])
 
-                                    //Log.d("anneeALenversFormater", "1: ${anneeALenversFormater.joinToString("")}")
                                     // Modification minute en base 10
-                                    val minutesString = minutesChar.joinToString("")
+                                    val minutesString = minute.joinToString("")
                                     val minutesFloat = minutesString.toFloatOrNull() ?: 0.0f
                                     val minuteBase10 = String.format("%.2f", minutesFloat / 60)
 
@@ -685,12 +705,12 @@ class maconso : AppCompatActivity(){
                                     val deuxDernierChiffres = charArrayOf(minuteBase10Char[1],minuteBase10Char[2],minuteBase10Char[3])
                                     Log.d("deuxDernierChiffres", "1: ${deuxDernierChiffres.joinToString("")}")
                                     // Concaténation des heures et des minutes
-                                    val heureMinute = heure + deuxDernierChiffres
+                                    val heureMinute = hour + deuxDernierChiffres
                                     Log.d("heureMinute", "1: ${heureMinute.joinToString("")}")
 
-                                    val anneeALenversHeure = anneeALenvers+heureMinute
+                                    val anneeALenversHeure = yearBackwards+heureMinute
                                     Log.d("anneeALenversHeure", "1: ${anneeALenversHeure.joinToString("")}")
-                                    arrayOf(conso, heureMinute, annee, anneeALenversHeure,anneeALenversFormater)
+                                    arrayOf(conso, heureMinute, year, anneeALenversHeure,yearFormatted)
                                 }
                                 //trie le tableau par rapport a l'annee
                                 tableaufinal = tableaufinal.sortedBy { ligne ->
@@ -699,12 +719,12 @@ class maconso : AppCompatActivity(){
                                 }
                                 for (ligne in tableaufinal) {
                                     val conso = String(ligne[0])
-                                    val heure = String(ligne[1])
-                                    val annee = String(ligne[2])
-                                    val anneeALenversHeure = String(ligne[3])
-                                    val anneeALenversFormater = String(ligne[4])
+                                    val hour = String(ligne[1])
+                                    val year = String(ligne[2])
+                                    val yearFormattedHour = String(ligne[3])
+                                    val yearFormatted = String(ligne[4])
 
-                                    Log.d("Tableaufinal2", "Conso: $conso, Heure: $heure, Année: $annee, anneeALenversHeure : $anneeALenversHeure,anneeALenversFormater : $anneeALenversFormater")
+                                    Log.d("Tableaufinal2", "Conso: $conso, Heure: $hour, Année: $year, anneeALenversHeure : $yearFormattedHour,anneeALenversFormater : $yearFormatted")
                                 }
 
 
