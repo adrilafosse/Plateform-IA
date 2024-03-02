@@ -7,12 +7,20 @@ plugins {
 }
 
 android {
-    namespace 'fr.isen.francoisyatta.projectv2'
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Plateform-IA\\key.jks')
+            storePassword '123456'
+            keyPassword '123456'
+            keyAlias 'adri'
+        }
+    }
+    namespace 'fr.isen.francoisyatta.projectv3'
     compileSdk 33
 
     defaultConfig {
-        applicationId "fr.isen.francoisyatta.projectv2"
-        minSdk 23
+        applicationId "fr.isen.francoisyatta.projectv3"
+        minSdk 26
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -54,7 +62,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.android.volley:volley:1.2.1'
-
 
 
     implementation 'com.google.android.material:material:1.8.0'
@@ -100,4 +107,5 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation "androidx.work:work-runtime:2.7.0"
 }
