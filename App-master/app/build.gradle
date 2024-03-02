@@ -9,7 +9,7 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('C:\\Users\\Benja\\Desktop\\BE-Plateform IA\\key.jks')
+            storeFile file('C:\\Plateform-IA\\key.jks')
             storePassword '123456'
             keyPassword '123456'
             keyAlias 'adri'
@@ -20,7 +20,7 @@ android {
 
     defaultConfig {
         applicationId "fr.isen.francoisyatta.projectv3"
-        minSdk 23
+        minSdk 26
         targetSdk 32
         versionCode 1
         versionName "1.0"

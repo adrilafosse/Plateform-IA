@@ -3,7 +3,10 @@ package fr.isen.francoisyatta.projectv3
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+
 import android.os.Build
+import android.util.Base64
+
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -11,8 +14,14 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import javax.crypto.Cipher
+import javax.crypto.spec.SecretKeySpec
+
 
 class WorkClass(
     context: Context,
@@ -38,6 +47,14 @@ class WorkClass(
         return Result.success()
     }
 
+    private fun decryptAES(encrypted: String, key: String): String {
+        val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+        val secretKey = SecretKeySpec(key.toByteArray(charset("UTF-8")), "AES")
+
+        cipher.init(Cipher.DECRYPT_MODE, secretKey)
+        val decryptedBytes = cipher.doFinal(Base64.decode(encrypted, Base64.DEFAULT))
+        return String(decryptedBytes)
+    }
     private fun recupérationDonnées() {
 
         if (currentUser != null) {
@@ -58,40 +75,23 @@ class WorkClass(
                                     //on cree un tableau qui va prendre les valeurs de data
                                     for (i in 0 until taille) {
                                         val value = data.entries.elementAtOrNull(i)?.value as? String
+                                        val key = "603DEB1015CA71BE2B73AEF0857D7781"
                                         Log.d("value", "1: $value")
                                         if (value != null) {
-                                            monTableau.add(value)
+                                            val decryptedValue = decryptAES(value, key)
+                                            Log.d("valeur decryptée", "1: $decryptedValue")
+                                            monTableau.add(decryptedValue)
                                             Log.d("valeur du tableau", "1: ${monTableau[i]}")
                                         }
                                     }
                                     val tableaustring = monTableau.toTypedArray()
                                     //on decoupe de string en 3 parties
                                     tableaufinal = tableaustring.map { chaine ->
-                                        val conso = charArrayOf(chaine[0], chaine[1], chaine[2])
-                                        val heureChar = charArrayOf(chaine[5], chaine[6])
+                                        val conso = charArrayOf(chaine[12],chaine[13], chaine[14], chaine[15],chaine[16],chaine[17],chaine[18],chaine[19],chaine[20])
+                                        val heureChar = charArrayOf(chaine[6], chaine[7])
                                         val minutesChar = charArrayOf(chaine[8], chaine[9])
-                                        val annee = charArrayOf(
-                                            chaine[11],
-                                            chaine[12],
-                                            chaine[14],
-                                            chaine[15],
-                                            chaine[17],
-                                            chaine[18],
-                                            chaine[19],
-                                            chaine[20]
-                                        )
-                                        val anneeTotal = charArrayOf(
-                                            chaine[11],
-                                            chaine[12],
-                                            chaine[13],
-                                            chaine[14],
-                                            chaine[15],
-                                            chaine[16],
-                                            chaine[17],
-                                            chaine[18],
-                                            chaine[19],
-                                            chaine[20]
-                                        )
+                                        val annee = charArrayOf(chaine[0], chaine[1], chaine[2],chaine[3],'2','0',chaine[4],chaine[5])
+                                        val anneeTotal = charArrayOf(chaine[0], chaine[1],'/', chaine[2],chaine[3],'/','2','0',chaine[4],chaine[5])
                                         val minutesString = minutesChar.joinToString("")
                                         val minutesFloat = minutesString.toFloatOrNull() ?: 0.0f
                                         val minuteBase10 = String.format("%.2f", minutesFloat / 60)
