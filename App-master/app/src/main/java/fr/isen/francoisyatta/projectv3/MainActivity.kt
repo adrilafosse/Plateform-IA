@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         // affichage des différents éléments du menu
         arrayList.add(Model("Ma consommation", "Afficher votre consommation électrique", R.drawable.maconso))
         arrayList.add(Model("Rapport d'activité", "Conseil pour mieux gérer votre consommation", R.drawable.eclair))
-        arrayList.add(Model("Profile", "Modifier votre profile", R.drawable.img))
+        arrayList.add(Model("Profil", "Modifier votre profil", R.drawable.img))
         // arrayList.add(Model("Maintenance prédictive", "Afficher les améliorations possibles", R.drawable.maintenance))
         arrayList.add(Model("Aide", "Un problème ? Contactez nous", R.drawable.aide))
         //arrayList.add(Model("BLE", "Connexion BLE", R.drawable.bluetooth))

@@ -70,7 +70,7 @@ class MyAdapter (val arrayList: ArrayList<Model>, val context: Context) :
             if (position == 2) {
                 Toast.makeText(
                     context,
-                    "Click sur Profile",
+                    "Click sur Profil",
                     Toast.LENGTH_LONG
                 ).show()
                 val intentAnomalies = Intent(context, ProfilActivity::class.java)
