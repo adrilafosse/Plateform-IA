@@ -745,7 +745,7 @@ class maconso : AppCompatActivity(){
         drawChart(graphLignes, chart, btn)
     }
     private fun setLineChartData(lineValues: ArrayList<Entry>, color: Int): LineDataSet {
-        val lineDataset = LineDataSet(lineValues, "Consommation en W")
+        val lineDataset = LineDataSet(lineValues, "Consommation en Wh")
         //We add features to our chart
         lineDataset.color = resources.getColor(color)
         lineDataset.lineWidth = 3f

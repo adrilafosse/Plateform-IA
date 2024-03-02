@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:paddingStart="8dp"
-                android:text="Les 5 jours où la consommation est la plus élevée en W :"
+                android:text="Les 5 jours où la consommation est la plus élevée en Wh :"
                 android:textColor="@color/noirsavee"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -161,7 +161,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:text="Définir un seuil de consommation en W afin de recevoir une alerte si dépassement"
+        android:text="Définir un seuil de consommation en Wh afin de recevoir une alerte si dépassement dans la journée"
         android:textColor="#93CDDB"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -178,7 +178,7 @@
 
         android:drawablePadding="10dp"
         android:ems="5"
-        android:hint="Nouveau prix seuil"
+        android:hint="Nouveau seuil de consommation en Wh"
         android:paddingLeft="20dp"
 
         android:paddingTop="10dp"

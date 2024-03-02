@@ -22,12 +22,16 @@ class ProfilActivity : AppCompatActivity() {
         val editText_nouveau_prixHC = findViewById<EditText>(R.id.editText_nouveau_prixHC)
         val editText_nouveau_prixHP = findViewById<EditText>(R.id.editText_nouveau_prixHP)
         val editText_nouveau_prix = findViewById<EditText>(R.id.editText_nouveau_prix)
+        val editText_puissance_souscrite = findViewById<EditText>(R.id.editText_puissance_souscrite)
+        val editText_prix_abonnement = findViewById<EditText>(R.id.editText_prix_abonnement)
+
         val spinner = findViewById<Spinner>(R.id.spinner_profil)
 
         val textView_prix_fixeHP = findViewById<TextView>(R.id.textView_prix_fixeHP)
         val textView_prix_fixe = findViewById<TextView>(R.id.textView_prix_fixe)
         val textView_prix_fixeHC = findViewById<TextView>(R.id.textView_prix_fixeHC)
-
+        val textView_puissance_souscrite = findViewById<TextView>(R.id.textView_puissance_souscrite)
+        val textView_prix_abonnement= findViewById<TextView>(R.id.textView_prix_abonnement)
 
         val options = arrayOf("Classique", "Heure pleine/creuse")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
@@ -44,19 +48,26 @@ class ProfilActivity : AppCompatActivity() {
         var prix= 0.0
         var prixHP= 0.0
         var prixHC= 0.0
+        var puissance = 0.0
+        var abonnement = 0.0
         profilRef?.get()?.addOnSuccessListener { documents ->
             for (document in documents) {
                 option = document.getString("option").toString()
                 prix = document.getDouble("prix") ?: 0.0
                 prixHP = document.getDouble("prixHP") ?: 0.0
                 prixHC = document.getDouble("prixHC") ?: 0.0
+                puissance = document.getDouble("puissance_souscrite") ?: 0.0
+                abonnement = document.getDouble("prix_abonnement") ?: 0.0
+
                 Log.d(
                     "option/firebase/prix profil",
-                    "option: $option, prix : $prix, prixHP: $prixHP, prixHC: $prixHC"
+                    "option: $option, prix : $prix, prixHP: $prixHP, prixHC: $prixHC, puissance_souscrite : $puissance, abonnement : $abonnement"
                 )
                 textView_prix_fixe.text="Prix classique : $prix € par kwh"
                 textView_prix_fixeHP.text="Prix HP : $prixHP € par kwh"
                 textView_prix_fixeHC.text="Prix HC : $prixHC € par kwh"
+                textView_prix_abonnement.text="Prix abonnement : $abonnement € par mois"
+                textView_puissance_souscrite.text="Puissance souscrite : $puissance kVA"
             }
         }
 
@@ -95,6 +106,9 @@ class ProfilActivity : AppCompatActivity() {
             val editText_nouveau_prixString = editText_nouveau_prix.text.toString()
             val editText_nouveau_prixHPString = editText_nouveau_prixHP.text.toString()
             val editText_nouveau_prixHCString = editText_nouveau_prixHC.text.toString()
+            val editText_puissance_souscriteString = editText_puissance_souscrite.text.toString()
+            val editText_prix_abonnementString = editText_prix_abonnement.text.toString()
+
 
             val profilRef = uid?.let { db.collection("id").document(it).collection("profil") }
             profilRef?.get()?.addOnSuccessListener { documents ->
@@ -111,6 +125,8 @@ class ProfilActivity : AppCompatActivity() {
                         dataToUpdate["prixHP"] = editText_nouveau_prixHPString.toDoubleOrNull() ?: 0.0
                         dataToUpdate["prixHC"] = editText_nouveau_prixHCString.toDoubleOrNull() ?: 0.0
                     }
+                    dataToUpdate["puissance_souscrite"] = editText_puissance_souscriteString.toDoubleOrNull() ?: 0.0
+                    dataToUpdate["prix_abonnement"] = editText_prix_abonnementString.toDoubleOrNull() ?: 0.0
 
                     document.reference.update(dataToUpdate)
                         .addOnSuccessListener {

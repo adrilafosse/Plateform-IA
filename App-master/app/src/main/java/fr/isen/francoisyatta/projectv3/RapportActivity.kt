@@ -11,6 +11,8 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class RapportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +22,7 @@ class RapportActivity : AppCompatActivity() {
         val cardViewComparaison: CardView = findViewById(R.id.comparaison)
 
         val Button: Button = findViewById(R.id.button5)
+        var titre: TextView = cardViewJours5max.findViewById(R.id.textView_prix_fixeHP)
         var jour1: TextView = cardViewJours5max.findViewById(R.id.textView1)
         val jour2: TextView = cardViewJours5max.findViewById(R.id.textView2)
         val jour3: TextView = cardViewJours5max.findViewById(R.id.textView3)
@@ -47,18 +50,25 @@ class RapportActivity : AppCompatActivity() {
                                 //on recupere les données
                                 val dataConsoParJour = document.data
                                 Log.d("donnée de firebase moyenne conso par jour", "1: $dataConsoParJour")
+
                                 if(dataConsoParJour != null){
 
+                                    val dateDuJour = LocalDate.now()
+                                    val anneeActuelle = dateDuJour.year.toString()
+                                    titre.text ="Les 5 jours de $anneeActuelle où la consommation est la plus élevée en Wh pour :"
                                     val dataList = dataConsoParJour.toList()
 
-                                    val sortedDataList = dataList.sortedByDescending { it.second as Long }
+                                    // Filtrer les données pour garder uniquement celles de l'année actuelle
+                                    val dataListAnneeActuelle = dataList.filter { it.first.split("/")[2] == anneeActuelle }
+
+                                    val sortedDataList = dataListAnneeActuelle.sortedByDescending { it.second as Long }
 
                                     val topFiveData = sortedDataList.take(5)
-                                    jour1.text ="${topFiveData[0].first} : ${topFiveData[0].second}"
-                                    jour2.text ="${topFiveData[1].first} : ${topFiveData[1].second}"
-                                    jour3.text ="${topFiveData[2].first} : ${topFiveData[2].second}"
-                                    jour4.text ="${topFiveData[3].first} : ${topFiveData[3].second}"
-                                    jour5.text ="${topFiveData[4].first} : ${topFiveData[4].second}"
+                                    jour1.text ="${topFiveData[0].first} : ${topFiveData[0].second} Wh"
+                                    jour2.text ="${topFiveData[1].first} : ${topFiveData[1].second} Wh"
+                                    jour3.text ="${topFiveData[2].first} : ${topFiveData[2].second} Wh"
+                                    jour4.text ="${topFiveData[3].first} : ${topFiveData[3].second} Wh"
+                                    jour5.text ="${topFiveData[4].first} : ${topFiveData[4].second} Wh"
                                     for ((date, consommation) in topFiveData) {
                                         Log.d("Top 5 consommations", "Date: $date, Consommation: $consommation")
                                     }
@@ -85,7 +95,7 @@ class RapportActivity : AppCompatActivity() {
                                             prixTotal += valeur.toDouble()
                                         }
                                     }
-                                    classique.text = "Prix total forfait classique : ${String.format("%.2f", prixTotal)}"
+                                    classique.text = "Prix total forfait classique : ${String.format("%.2f", prixTotal)} €"
                                     Log.d("Prix total", prixTotal.toString())
                                 }
                             }
@@ -109,12 +119,12 @@ class RapportActivity : AppCompatActivity() {
                                                     prixTotal_HP_HC += valeur.toDouble()
                                                 }
                                             }
-                                            HP_HC.text = "Prix total forfait HP_HC 1: ${String.format("%.2f", prixTotal_HP_HC)}"
+                                            HP_HC.text = "Prix total forfait HP_HC ${String.format("%.2f", prixTotal_HP_HC)} €"
                                         }
                                     }
                                 }
                                 if(prixTotal_HP_HC > prixTotal ){
-                                    vainqueur.text="Forfait classique est plus avantageux"
+                                    vainqueur.text="Forfait classique est le plus avantageux"
                                 }
                                 else{
                                     vainqueur.text="Forfait HP/HC est plus avantageux"

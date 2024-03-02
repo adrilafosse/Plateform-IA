@@ -9,7 +9,7 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('C:\\Plateform-IA\\key.jks')
+            storeFile file('C:\\Users\\Benja\\Desktop\\BE-Plateform IA\\key.jks')
             storePassword '123456'
             keyPassword '123456'
             keyAlias 'adri'

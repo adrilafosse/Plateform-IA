@@ -9,37 +9,35 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="170dp"
-        android:layout_height="118dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="122dp"
+        android:layout_height="107dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:text="Profil"
         android:textColor="#93CDDB"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.061" />
-
+        app:layout_constraintVertical_bias="0.034" />
 
     <Spinner
         android:id="@+id/spinner_profil"
         android:layout_width="296dp"
         android:layout_height="35dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/spinner_background"
         android:entries="@array/profil_options"
         android:textColor="#93CDDB"
@@ -160,6 +158,80 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_prix_fixeHC" />
+
+    <TextView
+        android:id="@+id/textView_puissance_souscrite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="210dp"
+        android:text="Puissance souscrite : 9 kVA"
+        android:textColor="#93CDDB"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_profil" />
+
+    <EditText
+        android:id="@+id/editText_puissance_souscrite"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_champs_login"
+        android:drawableLeft="@drawable/icone_compteur"
+
+        android:drawablePadding="10dp"
+        android:ems="5"
+        android:hint="Nouvelle puissance souscrite"
+        android:paddingLeft="20dp"
+
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="#FFFFFF"
+
+        android:textColorHint="#8F8F8F"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_puissance_souscrite" />
+
+    <TextView
+        android:id="@+id/textView_prix_abonnement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Prix abonnement : 15.79 €"
+        android:textColor="#93CDDB"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_puissance_souscrite" />
+
+    <EditText
+        android:id="@+id/editText_prix_abonnement"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_champs_login"
+
+        android:drawableLeft="@drawable/icone_compteur"
+        android:drawablePadding="10dp"
+        android:ems="5"
+        android:hint="Nouveau prix d'abonnement"
+
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+
+        android:textColor="#FFFFFF"
+        android:textColorHint="#8F8F8F"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_prix_abonnement" />
 
     <Button
         android:id="@+id/button5"

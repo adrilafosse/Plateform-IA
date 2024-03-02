@@ -60,10 +60,6 @@
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".bilancarbone"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".maconso"
             android:exported="false" />
         <activity
