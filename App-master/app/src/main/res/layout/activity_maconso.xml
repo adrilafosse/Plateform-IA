@@ -11,68 +11,64 @@
         android:id="@+id/button4"
         android:layout_width="74dp"
         android:layout_height="56dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="4dp"
         android:backgroundTint="#CDDC39"
         android:onClick="goToPageAnnee"
         android:text="A"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentContainer"
         app:layout_constraintHorizontal_bias="0.95"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="12dp"/>
+        app:layout_constraintStart_toEndOf="@+id/button3"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainer" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="74dp"
         android:layout_height="56dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="4dp"
         android:backgroundTint="#CDDC39"
         android:onClick="goToPageSemaine"
         android:text="S"
         app:layout_constraintEnd_toStartOf="@+id/button3"
-        app:layout_constraintStart_toEndOf="@id/button1"
-        app:layout_constraintTop_toBottomOf="@id/fragmentContainer"
         app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="12dp"/>
+        app:layout_constraintStart_toEndOf="@id/button1"
+        app:layout_constraintTop_toBottomOf="@id/fragmentContainer" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="74dp"
         android:layout_height="56dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="4dp"
         android:backgroundTint="#CDDC39"
         android:onClick="goToPageMois"
         android:text="M"
         app:layout_constraintEnd_toStartOf="@+id/button4"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/button2"
         app:layout_constraintTop_toBottomOf="@id/fragmentContainer"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="12dp"
         app:rippleColor="#673AB7"
         app:strokeColor="#2196F3" />
 
     <Button
 
-        android:backgroundTint="#CDDC39"
         android:id="@+id/button1"
         android:layout_width="74dp"
         android:layout_height="56dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="4dp"
+        android:backgroundTint="#CDDC39"
         android:onClick="goToPageJour"
         android:text="J"
         app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentContainer"
         app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="12dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentContainer" />
 
     <TextView
         android:id="@+id/titreGraph2"
