@@ -43,7 +43,6 @@ class WorkClass(
         return String(decryptedBytes)
     }
     private fun recupérationDonnées() {
-
         if (currentUser != null) {
             // on récupère les données de la collection id qui a pour id l'uid de l'utilisateur
             if (uid != null) {
