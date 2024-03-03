@@ -38,6 +38,7 @@ class RapportActivity : AppCompatActivity() {
         val currentUser = mAuth.currentUser
         val uid = currentUser?.uid
 
+
         if (currentUser != null) {
             // on récupère les données de la collection id qui a pour id l'uid de l'utilisateur
             if (uid != null) {
@@ -55,7 +56,7 @@ class RapportActivity : AppCompatActivity() {
 
                                     val dateDuJour = LocalDate.now()
                                     val anneeActuelle = dateDuJour.year.toString()
-                                    titre.text ="Les 5 jours de $anneeActuelle où la consommation est la plus élevée en Wh pour :"
+                                    titre.text ="Les 5 jours de $anneeActuelle où la consommation est la plus élevée en Wh :"
                                     val dataList = dataConsoParJour.toList()
 
                                     // Filtrer les données pour garder uniquement celles de l'année actuelle
@@ -88,15 +89,27 @@ class RapportActivity : AppCompatActivity() {
                                 val dataPrixParJour = document.data
                                 Log.d("donnée de firebase moyenne prix par jour", "1: $dataPrixParJour")
 
-                                if(dataPrixParJour != null){
-                                    // Parcour les données et additionne chaque prix
-                                    for ((cle, valeur) in dataPrixParJour) {
-                                        if (valeur is Number) {
-                                            prixTotal += valeur.toDouble()
-                                        }
+                                //on recupere le prix du forfait par mois
+                                var prix_abonnement = 0.0
+                                val profilRef = uid?.let { db.collection("id").document(it).collection("profil") }
+                                profilRef.get().addOnSuccessListener { documents ->
+                                    for (document in documents) {
+                                        prix_abonnement = document.getDouble("prix_abonnement") ?: 0.0
                                     }
-                                    classique.text = "Prix total forfait classique : ${String.format("%.2f", prixTotal)} €"
-                                    Log.d("Prix total", prixTotal.toString())
+                                    Log.d("prix_abonnement = ", "$prix_abonnement")
+
+                                    val prix_par_jour = (prix_abonnement*12)/365
+
+                                    if(dataPrixParJour != null){
+                                        // Parcour les données et additionne chaque prix
+                                        for ((cle, valeur) in dataPrixParJour) {
+                                            if (valeur is Number) {
+                                                prixTotal += valeur.toDouble() + prix_par_jour
+                                            }
+                                        }
+                                        classique.text = "Prix total forfait classique : ${String.format("%.2f", prixTotal)} €"
+                                        Log.d("Prix total", prixTotal.toString())
+                                    }
                                 }
                             }
                         }
@@ -111,15 +124,27 @@ class RapportActivity : AppCompatActivity() {
                                         val dataPrixParJour = document.data
                                         Log.d("donnée de firebase moyenne prix par jour HP_HC", "1: $dataPrixParJour")
 
-                                        if(dataPrixParJour != null){
-
-                                            // Parcour les données et additionne chaque prix
-                                            for ((cle, valeur) in dataPrixParJour) {
-                                                if (valeur is Number) {
-                                                    prixTotal_HP_HC += valeur.toDouble()
-                                                }
+                                        //on recupere le prix du forfait par mois
+                                        var prix_abonnement = 0.0
+                                        val profilRef = uid?.let { db.collection("id").document(it).collection("profil") }
+                                        profilRef.get().addOnSuccessListener { documents ->
+                                            for (document in documents) {
+                                                prix_abonnement = document.getDouble("prix_abonnement") ?: 0.0
                                             }
-                                            HP_HC.text = "Prix total forfait HP_HC ${String.format("%.2f", prixTotal_HP_HC)} €"
+                                            Log.d("prix_abonnement HP_HC = ", "$prix_abonnement")
+
+                                            val prix_par_jour = (prix_abonnement*12)/365
+
+                                            if(dataPrixParJour != null){
+                                                // Parcour les données et additionne chaque prix
+                                                 for ((cle, valeur) in dataPrixParJour) {
+                                                    if (valeur is Number) {
+                                                        prixTotal_HP_HC += valeur.toDouble() + prix_par_jour
+                                                    }
+                                                }
+                                                HP_HC.text = "Prix total forfait HP_HC ${String.format("%.2f", prixTotal_HP_HC)} €"
+                                                Log.d("prixTotal_HP_HCl", prixTotal_HP_HC.toString())
+                                            }
                                         }
                                     }
                                 }
