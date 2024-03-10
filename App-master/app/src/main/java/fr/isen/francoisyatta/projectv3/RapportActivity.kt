@@ -129,7 +129,7 @@ class RapportActivity : AppCompatActivity() {
                                         val profilRef = uid?.let { db.collection("id").document(it).collection("profil") }
                                         profilRef.get().addOnSuccessListener { documents ->
                                             for (document in documents) {
-                                                prix_abonnement = document.getDouble("prix_abonnement") ?: 0.0
+                                                prix_abonnement = document.getDouble("prix_abonnement_HP_HC") ?: 0.0
                                             }
                                             Log.d("prix_abonnement HP_HC = ", "$prix_abonnement")
 

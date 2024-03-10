@@ -201,7 +201,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Prix abonnement : 15.79 €"
+        android:text="Prix abonnement Classique : 15.79 €"
         android:textColor="#93CDDB"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -232,6 +232,44 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_prix_abonnement" />
+
+    <TextView
+        android:id="@+id/textView_prix_abonnement_HP_HC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Prix abonnement HP/HC : 15.79 €"
+        android:textColor="#93CDDB"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_puissance_souscrite" />
+
+    <EditText
+        android:id="@+id/editText_prix_abonnement_HP_HC"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+
+        android:background="@drawable/bg_champs_login"
+        android:drawableLeft="@drawable/icone_compteur"
+        android:drawablePadding="10dp"
+        android:ems="5"
+
+        android:hint="Nouveau prix d'abonnement HP/HC"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+
+        android:paddingBottom="10dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#8F8F8F"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_prix_abonnement_HP_HC" />
+
 
     <Button
         android:id="@+id/button5"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="profil_options">
-        <item>Classic</item>
+        <item>Classique</item>
         <item>peak/off-peak time</item>
     </string-array>
 </resources>
